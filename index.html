@@ -22,19 +22,6 @@ position:relative;
 background:linear-gradient(135deg,#ff4e8a,#ff8fb1);
 }
 
-/* FUNDO */
-body::before{
-content:"";
-position:absolute;
-top:0;left:0;
-width:100%;height:100%;
-background-size:70%;
-opacity:0.22;
-filter:blur(1.5px);
-z-index:0;
-}
-
-/* LOGIN */
 #login{
 position:absolute;
 width:100%;height:100%;
@@ -70,7 +57,6 @@ color:#ff4e8a;
 font-weight:bold;
 }
 
-/* SITE */
 #site{
 display:none;
 flex-direction:column;
@@ -83,80 +69,21 @@ padding:20px;
 
 h1{
 font-family:'Great Vibes', cursive;
-font-size:4rem;
+font-size:3rem;
 margin-bottom:20px;
-text-shadow:0 5px 20px rgba(0,0,0,0.3);
 }
 
 .contador{
-font-size:1.8rem;
+font-size:1.5rem;
 background:rgba(255,255,255,0.25);
-padding:40px;
+padding:30px;
 border-radius:20px;
-backdrop-filter:blur(10px);
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
 .tempo{
 margin-top:15px;
-font-size:2rem;
+font-size:1.8rem;
 font-weight:bold;
-}
-
-/* FRASES */
-.frase{
-position:absolute;
-top:12%;
-font-family:'Great Vibes', cursive;
-font-size:2rem;
-opacity:0;
-animation:fadeFrase 8s ease-in-out;
-text-align:center;
-max-width:85%;
-}
-
-@keyframes fadeFrase{
-0%{opacity:0;}
-20%{opacity:1;}
-80%{opacity:1;}
-100%{opacity:0;}
-}
-
-/* CORAÇÕES */
-.heart{
-position:absolute;
-bottom:-100px;
-font-size:30px;
-animation:floatUp linear forwards;
-}
-
-/* POLAROID */
-.foto{
-position:absolute;
-bottom:-200px;
-width:200px;
-background:white;
-padding:10px;
-border-radius:10px;
-animation:floatUp linear forwards;
-}
-
-.foto img{width:100%;border-radius:8px;}
-
-@keyframes floatUp{
-0%{transform:translateY(0);opacity:0;}
-10%{opacity:1;}
-100%{transform:translateY(-120vh);opacity:0;}
-}
-
-/* MOBILE */
-@media (max-width:768px){
-body::before{background-size:110%;}
-h1{font-size:2.8rem;}
-.contador{padding:25px;font-size:1.2rem;}
-.tempo{font-size:1.5rem;}
-.frase{font-size:1.6rem;}
-.foto{width:140px;}
 }
 </style>
 </head>
@@ -178,36 +105,36 @@ Estamos juntos há:
 </div>
 </div>
 
-<audio id="musica" loop preload="auto">
-<source src="musica.mp3" type="audio/mp3">
-</audio>
-
 <script>
 
-/* LOGIN */
 function verificarSenha(){
 if(document.getElementById("senha").value==="1234"){
 document.getElementById("login").style.display="none";
 document.getElementById("site").style.display="flex";
-
-const musica=document.getElementById("musica");
-musica.volume=0.3;
-musica.play();
-
-iniciarCoracoes();
-iniciarFotos();
-iniciarFrases();
 }else{
 document.getElementById("erro").innerText="Senha incorreta 😢";
 }
 }
 
-/* CONTADOR (COLOCA A DATA DEPOIS) */
 const dataInicio=new Date("2025-01-01");
 
 function atualizarTempo(){
 const agora=new Date();
 const diff=Math.floor((agora-dataInicio)/1000);
 
-const anos=Math.floor(diff/(365.25*24*3600));
-const meses
+const dias=Math.floor(diff/(24*3600));
+const horas=Math.floor((diff%(24*3600))/3600);
+const minutos=Math.floor((diff%3600)/60);
+const segundos=diff%60;
+
+document.getElementById("tempo").innerHTML=
+`${dias} dias ${horas}h ${minutos}m ${segundos}s`;
+}
+
+setInterval(atualizarTempo,1000);
+atualizarTempo();
+
+</script>
+
+</body>
+</html>
