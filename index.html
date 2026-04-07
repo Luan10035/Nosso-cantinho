@@ -15,126 +15,134 @@ box-sizing:border-box;
 }
 
 body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#000; /* FUNDO PRETO */
-font-family:'Playfair Display', serif;
+background:#000;
 color:white;
-}
-
-/* LOGIN */
-#login{
-position:absolute;
-width:100%;
-height:100%;
+font-family:'Playfair Display', serif;
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
-background:#000; /* PRETO */
+min-height:100vh;
+overflow:hidden;
 }
 
-#login h2{
+/* CONTAINER */
+.container{
+text-align:center;
+position:relative;
+}
+
+/* FRASE TOPO */
+.frase{
+position:absolute;
+top:-80px;
+width:100%;
+font-family:'Great Vibes', cursive;
+font-size:1.5rem;
+opacity:0.8;
+}
+
+/* IMAGEM CENTRAL */
+.foto-central{
+width:300px;
+border-radius:20px;
+opacity:0.5;
+}
+
+/* NOME */
+.nome{
+position:absolute;
+top:120px;
+width:100%;
 font-family:'Great Vibes', cursive;
 font-size:2.5rem;
-margin-bottom:10px;
 }
 
-#login input{
-padding:10px;
-border:none;
-border-radius:8px;
-margin-top:10px;
-background:#111;
-color:white;
-}
-
-#login button{
-margin-top:10px;
-padding:10px 20px;
-border:none;
-border-radius:8px;
-background:white;
-color:black;
-font-weight:bold;
-cursor:pointer;
-}
-
-/* SITE */
-#site{
-display:none;
-flex-direction:column;
-align-items:center;
-text-align:center;
-}
-
-h1{
-font-family:'Great Vibes', cursive;
-font-size:3.5rem;
-margin-bottom:20px;
-}
-
+/* CARD CONTADOR */
 .contador{
-background:rgba(255,255,255,0.1);
-padding:30px;
-border-radius:20px;
-font-size:1.5rem;
-border:1px solid rgba(255,255,255,0.2);
+margin-top:-60px;
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:15px;
+backdrop-filter:blur(10px);
 }
 
 .tempo{
-margin-top:15px;
-font-size:2rem;
-font-weight:bold;
+margin-top:10px;
+font-size:1.2rem;
+}
+
+/* POLAROIDS */
+.polaroids{
+position:absolute;
+bottom:-100px;
+display:flex;
+gap:15px;
+}
+
+.polaroid{
+background:white;
+padding:5px;
+border-radius:10px;
+width:90px;
+transform:rotate(-5deg);
+}
+
+.polaroid img{
+width:100%;
+border-radius:8px;
+}
+
+.polaroid:nth-child(2){
+transform:rotate(5deg);
+}
+
+.polaroid:nth-child(3){
+transform:rotate(-3deg);
 }
 </style>
 </head>
 
 <body>
 
-<div id="login">
-<h2>Digite a senha ❤️</h2>
-<input type="password" id="senha" placeholder="Senha">
-<button onclick="verificarSenha()">Entrar</button>
-<p id="erro"></p>
+<div class="container">
+
+<div class="frase">
+Se eu tivesse que escolher de novo, escolheria você.
 </div>
 
-<div id="site">
-<h1>Luan & Girlane ❤️</h1>
+<img src="https://via.placeholder.com/300x400" class="foto-central">
+
+<div class="nome">
+Luan & Girlane ❤️
+</div>
+
 <div class="contador">
 Estamos juntos há:
 <div class="tempo" id="tempo"></div>
 </div>
+
+<div class="polaroids">
+<div class="polaroid"><img src="https://via.placeholder.com/100"></div>
+<div class="polaroid"><img src="https://via.placeholder.com/100"></div>
+<div class="polaroid"><img src="https://via.placeholder.com/100"></div>
+</div>
+
 </div>
 
 <script>
 
-/* LOGIN */
-function verificarSenha(){
-if(document.getElementById("senha").value==="luanegirlane"){
-document.getElementById("login").style.display="none";
-document.getElementById("site").style.display="flex";
-}else{
-document.getElementById("erro").innerText="Senha incorreta 😢";
-}
-}
+const dataInicio = new Date("2026-03-02");
 
-/* DATA */
-const dataInicio=new Date("2026-03-02");
-
-/* CONTADOR */
 function atualizarTempo(){
-const agora=new Date();
-const diff=Math.floor((agora-dataInicio)/1000);
+const agora = new Date();
+const diff = Math.floor((agora - dataInicio)/1000);
 
-const anos=Math.floor(diff/(365.25*24*3600));
-const meses=Math.floor((diff%(365.25*24*3600))/(30.44*24*3600));
-const dias=Math.floor((diff%(30.44*24*3600))/(24*3600));
-const horas=Math.floor((diff%(24*3600))/3600);
-const minutos=Math.floor((diff%3600)/60);
-const segundos=diff%60;
+const anos = Math.floor(diff/(365.25*24*3600));
+const meses = Math.floor((diff%(365.25*24*3600))/(30.44*24*3600));
+const dias = Math.floor((diff%(30.44*24*3600))/(24*3600));
+const horas = Math.floor((diff%(24*3600))/3600);
+const minutos = Math.floor((diff%3600)/60);
+const segundos = diff%60;
 
 document.getElementById("tempo").innerHTML =
 `${anos} anos, ${meses} meses, ${dias} dias<br>
