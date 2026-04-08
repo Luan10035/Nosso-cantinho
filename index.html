@@ -21,7 +21,7 @@ font-family:'Playfair Display', serif;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:100vh;
+height:100vh;
 overflow:hidden;
 }
 
@@ -31,52 +31,34 @@ text-align:center;
 position:relative;
 }
 
-/* FRASE TOPO */
-.frase-topo{
-position:absolute;
-top:-80px;
-width:100%;
-font-family:'Great Vibes', cursive;
-font-size:1.5rem;
-opacity:0.8;
-}
-
-/* IMAGEM CENTRAL */
-.foto-central{
-width:300px;
-border-radius:20px;
-opacity:0.4;
-}
-
-/* NOME */
+/* NOME PRINCIPAL */
 .nome{
-position:absolute;
-top:120px;
-width:100%;
 font-family:'Great Vibes', cursive;
-font-size:2.5rem;
+font-size:4rem;
+margin-bottom:30px;
 }
 
 /* CONTADOR */
 .contador{
-margin-top:-60px;
 background:rgba(255,255,255,0.08);
-padding:20px;
+padding:25px;
 border-radius:15px;
 backdrop-filter:blur(10px);
 }
 
 .tempo{
 margin-top:10px;
-font-size:1.2rem;
+font-size:1.3rem;
 }
 
 /* CORAÇÕES */
 .heart{
-position:absolute;
-bottom:-50px;
-font-size:20px;
+position:fixed;
+bottom:-20px;
+font-size:22px;
 animation:subir linear forwards;
+z-index:0;
+pointer-events:none;
 }
 
 @keyframes subir{
@@ -87,16 +69,17 @@ animation:subir linear forwards;
 
 /* FRASES DINÂMICAS */
 .frase{
-position:absolute;
+position:fixed;
 font-family:'Great Vibes', cursive;
-font-size:1.4rem;
+font-size:1.5rem;
 opacity:0;
-animation:aparecer 10s ease-in-out forwards;
-max-width:250px;
+animation:fade 10s ease-in-out forwards;
+max-width:280px;
 text-align:center;
+pointer-events:none;
 }
 
-@keyframes aparecer{
+@keyframes fade{
 0%{opacity:0; transform:translateY(20px);}
 20%{opacity:1;}
 80%{opacity:1;}
@@ -109,12 +92,6 @@ text-align:center;
 <body>
 
 <div class="container">
-
-<div class="frase-topo">
-Se eu tivesse que escolher de novo, escolheria você.
-</div>
-
-<img src="https://via.placeholder.com/300x400" class="foto-central">
 
 <div class="nome">
 Luan & Girlane ❤️
@@ -151,23 +128,23 @@ ${horas}h ${minutos}m ${segundos}s`;
 setInterval(atualizarTempo,1000);
 atualizarTempo();
 
-/* CORAÇÕES */
+/* CORAÇÕES (CORRIGIDO) */
 function criarCoracao(){
 const heart = document.createElement("div");
 heart.className = "heart";
 heart.innerHTML = "❤️";
 
 heart.style.left = Math.random()*100 + "vw";
-heart.style.animationDuration = (5 + Math.random()*5) + "s";
+heart.style.animationDuration = (6 + Math.random()*4) + "s";
 
 document.body.appendChild(heart);
 
 setTimeout(()=>heart.remove(),10000);
 }
 
-setInterval(criarCoracao,600);
+setInterval(criarCoracao,500);
 
-/* FRASES */
+/* FRASES (DINÂMICAS) */
 const frases = [
 "Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso.",
 "Você não é só parte dos meus dias… você é o melhor deles.",
