@@ -32,7 +32,7 @@ position:relative;
 }
 
 /* FRASE TOPO */
-.frase{
+.frase-topo{
 position:absolute;
 top:-80px;
 width:100%;
@@ -45,7 +45,7 @@ opacity:0.8;
 .foto-central{
 width:300px;
 border-radius:20px;
-opacity:0.5;
+opacity:0.4;
 }
 
 /* NOME */
@@ -57,7 +57,7 @@ font-family:'Great Vibes', cursive;
 font-size:2.5rem;
 }
 
-/* CARD CONTADOR */
+/* CONTADOR */
 .contador{
 margin-top:-60px;
 background:rgba(255,255,255,0.08);
@@ -71,34 +71,38 @@ margin-top:10px;
 font-size:1.2rem;
 }
 
-/* POLAROIDS */
-.polaroids{
+/* CORAÇÕES */
+.heart{
 position:absolute;
-bottom:-100px;
-display:flex;
-gap:15px;
+bottom:-50px;
+font-size:20px;
+animation:subir linear forwards;
 }
 
-.polaroid{
-background:white;
-padding:5px;
-border-radius:10px;
-width:90px;
-transform:rotate(-5deg);
+@keyframes subir{
+0%{transform:translateY(0);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-120vh);opacity:0;}
 }
 
-.polaroid img{
-width:100%;
-border-radius:8px;
+/* FRASES DINÂMICAS */
+.frase{
+position:absolute;
+font-family:'Great Vibes', cursive;
+font-size:1.4rem;
+opacity:0;
+animation:aparecer 10s ease-in-out forwards;
+max-width:250px;
+text-align:center;
 }
 
-.polaroid:nth-child(2){
-transform:rotate(5deg);
+@keyframes aparecer{
+0%{opacity:0; transform:translateY(20px);}
+20%{opacity:1;}
+80%{opacity:1;}
+100%{opacity:0; transform:translateY(-20px);}
 }
 
-.polaroid:nth-child(3){
-transform:rotate(-3deg);
-}
 </style>
 </head>
 
@@ -106,7 +110,7 @@ transform:rotate(-3deg);
 
 <div class="container">
 
-<div class="frase">
+<div class="frase-topo">
 Se eu tivesse que escolher de novo, escolheria você.
 </div>
 
@@ -121,16 +125,11 @@ Estamos juntos há:
 <div class="tempo" id="tempo"></div>
 </div>
 
-<div class="polaroids">
-<div class="polaroid"><img src="https://via.placeholder.com/100"></div>
-<div class="polaroid"><img src="https://via.placeholder.com/100"></div>
-<div class="polaroid"><img src="https://via.placeholder.com/100"></div>
-</div>
-
 </div>
 
 <script>
 
+/* CONTADOR */
 const dataInicio = new Date("2026-03-02");
 
 function atualizarTempo(){
@@ -151,6 +150,45 @@ ${horas}h ${minutos}m ${segundos}s`;
 
 setInterval(atualizarTempo,1000);
 atualizarTempo();
+
+/* CORAÇÕES */
+function criarCoracao(){
+const heart = document.createElement("div");
+heart.className = "heart";
+heart.innerHTML = "❤️";
+
+heart.style.left = Math.random()*100 + "vw";
+heart.style.animationDuration = (5 + Math.random()*5) + "s";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),10000);
+}
+
+setInterval(criarCoracao,600);
+
+/* FRASES */
+const frases = [
+"Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso.",
+"Você não é só parte dos meus dias… você é o melhor deles.",
+"O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você."
+];
+
+function criarFrase(){
+const frase = document.createElement("div");
+frase.className = "frase";
+
+frase.innerText = frases[Math.floor(Math.random()*frases.length)];
+
+frase.style.left = Math.random()*80 + "vw";
+frase.style.top = Math.random()*80 + "vh";
+
+document.body.appendChild(frase);
+
+setTimeout(()=>frase.remove(),10000);
+}
+
+setInterval(criarFrase,4000);
 
 </script>
 
