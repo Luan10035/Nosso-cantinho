@@ -23,7 +23,6 @@ opacity:0;
 animation:fadeIn 2s ease forwards;
 }
 
-/* FADE GERAL */
 @keyframes fadeIn{
 to{opacity:1;}
 }
@@ -31,21 +30,16 @@ to{opacity:1;}
 /* ESTRELAS */
 .estrelas{
 position:fixed;
-top:0;
-left:0;
 width:100%;
 height:100%;
 z-index:0;
-overflow:hidden;
 }
 
 .estrela{
 position:absolute;
 width:2px;
 height:2px;
-background:white;
 border-radius:50%;
-opacity:0.8;
 animation:piscar 2s infinite alternate;
 }
 
@@ -66,14 +60,17 @@ position:relative;
 font-family:'Great Vibes', cursive;
 font-size:4rem;
 margin-bottom:30px;
+background: linear-gradient(90deg, #a8d8ff, #b6f5c9, #ffc38a);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 }
 
 /* CONTADOR */
 .contador{
-background:#111;
+background: rgba(168, 216, 255, 0.08);
 padding:25px;
 border-radius:15px;
-border:1px solid rgba(255,255,255,0.2);
+border:1px solid rgba(182, 245, 201, 0.3);
 }
 
 .tempo{
@@ -81,8 +78,8 @@ margin-top:10px;
 font-size:1.3rem;
 }
 
-/* CORAÇÕES */
-.heart{
+/* CORAÇÕES + GIRASSOL */
+.float{
 position:fixed;
 bottom:-20px;
 font-size:22px;
@@ -106,7 +103,6 @@ opacity:0;
 animation:fadeMove 15s ease-in-out forwards;
 max-width:260px;
 text-align:center;
-pointer-events:none;
 z-index:2;
 }
 
@@ -147,7 +143,7 @@ border-radius:5px;
 <div class="container">
 
 <div class="nome">
-Luan & Girlane ❤️
+🌻 Luan & Girlane 🌻
 </div>
 
 <div class="contador">
@@ -161,33 +157,36 @@ Estamos juntos há:
 
 <script>
 
-/* ESTRELAS */
-const estrelasContainer = document.getElementById("estrelas");
+/* ESTRELAS COLORIDAS */
+const cores = ["#a8d8ff","#b6f5c9","#ffd966","#ffffff"];
 
 for(let i=0;i<80;i++){
-const estrela = document.createElement("div");
+const estrela=document.createElement("div");
 estrela.className="estrela";
+
 estrela.style.top=Math.random()*100+"%";
 estrela.style.left=Math.random()*100+"%";
+estrela.style.background=cores[Math.floor(Math.random()*cores.length)];
 estrela.style.animationDuration=(1+Math.random()*2)+"s";
-estrelasContainer.appendChild(estrela);
+
+document.getElementById("estrelas").appendChild(estrela);
 }
 
 /* CONTADOR */
-const dataInicio = new Date("2026-03-02");
+const dataInicio=new Date("2026-03-02");
 
 function atualizarTempo(){
-const agora = new Date();
-const diff = Math.floor((agora - dataInicio)/1000);
+const agora=new Date();
+const diff=Math.floor((agora-dataInicio)/1000);
 
-const anos = Math.floor(diff/(365.25*24*3600));
-const meses = Math.floor((diff%(365.25*24*3600))/(30.44*24*3600));
-const dias = Math.floor((diff%(30.44*24*3600))/(24*3600));
-const horas = Math.floor((diff%(24*3600))/3600);
-const minutos = Math.floor((diff%3600)/60);
-const segundos = diff%60;
+const anos=Math.floor(diff/(365.25*24*3600));
+const meses=Math.floor((diff%(365.25*24*3600))/(30.44*24*3600));
+const dias=Math.floor((diff%(30.44*24*3600))/(24*3600));
+const horas=Math.floor((diff%(24*3600))/3600);
+const minutos=Math.floor((diff%3600)/60);
+const segundos=diff%60;
 
-document.getElementById("tempo").innerHTML =
+document.getElementById("tempo").innerHTML=
 `${anos} anos, ${meses} meses, ${dias} dias<br>
 ${horas}h ${minutos}m ${segundos}s`;
 }
@@ -195,51 +194,55 @@ ${horas}h ${minutos}m ${segundos}s`;
 setInterval(atualizarTempo,1000);
 atualizarTempo();
 
-/* CORAÇÕES */
-function criarCoracao(){
-const heart = document.createElement("div");
-heart.className = "heart";
-heart.innerHTML = "❤️";
+/* CORAÇÕES + GIRASSOL */
+const simbolos=["❤️","🌻"];
 
-heart.style.left = Math.random()*100 + "vw";
-heart.style.animationDuration = (6 + Math.random()*4) + "s";
+function criarFloat(){
+const el=document.createElement("div");
+el.className="float";
+el.innerHTML=simbolos[Math.floor(Math.random()*simbolos.length)];
 
-document.body.appendChild(heart);
+el.style.left=Math.random()*100+"vw";
+el.style.animationDuration=(6+Math.random()*4)+"s";
 
-setTimeout(()=>heart.remove(),10000);
+document.body.appendChild(el);
+
+setTimeout(()=>el.remove(),10000);
 }
 
-setInterval(criarCoracao,600);
+setInterval(criarFloat,600);
 
 /* FRASES */
-const frases = [
-"Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso.",
-"Você não é só parte dos meus dias… você é o melhor deles.",
-"O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você."
+const frases=[
+"Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso 🌻",
+"Você não é só parte dos meus dias… você é o melhor deles ❤️",
+"O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você 💫",
+"Se eu me perder no mundo, sigo o teu sorriso como um girassol segue a luz 🌻",
+"Você é meu sol em forma de girassol 🌻"
 ];
 
-const posicoes = [
-{top:"5%", left:"5%"},
-{top:"5%", right:"5%"},
-{top:"30%", left:"5%"},
-{top:"30%", right:"5%"},
-{bottom:"10%", left:"5%"},
-{bottom:"10%", right:"5%"}
+const posicoes=[
+{top:"5%",left:"5%"},
+{top:"5%",right:"5%"},
+{top:"30%",left:"5%"},
+{top:"30%",right:"5%"},
+{bottom:"10%",left:"5%"},
+{bottom:"10%",right:"5%"}
 ];
 
-let indexPosicao = 0;
+let indexPos=0;
 
 function criarFrase(){
-const frase = document.createElement("div");
-frase.className = "frase";
+const frase=document.createElement("div");
+frase.className="frase";
 
-frase.innerText = frases[Math.floor(Math.random()*frases.length)];
+frase.innerText=frases[Math.floor(Math.random()*frases.length)];
 
-const pos = posicoes[indexPosicao];
-indexPosicao = (indexPosicao + 1) % posicoes.length;
+const pos=posicoes[indexPos];
+indexPos=(indexPos+1)%posicoes.length;
 
 for(let key in pos){
-frase.style[key] = pos[key];
+frase.style[key]=pos[key];
 }
 
 document.body.appendChild(frase);
@@ -250,32 +253,32 @@ setTimeout(()=>frase.remove(),15000);
 setInterval(criarFrase,5000);
 
 /* MÚSICAS */
-const musicas = [
-{nome:"Música 1", arquivo:"musica1.mp3"},
-{nome:"Música 2", arquivo:"musica2.mp3"},
-{nome:"Música 3", arquivo:"musica3.mp3"}
+const musicas=[
+{nome:"Stand by Me",arquivo:"standbyme.mp3"},
+{nome:"Música 2",arquivo:"musica2.mp3"},
+{nome:"Música 3",arquivo:"musica3.mp3"}
 ];
 
-const player = document.getElementById("musica");
-const selector = document.getElementById("musicSelector");
+const player=document.getElementById("musica");
+const selector=document.getElementById("musicSelector");
 
 musicas.forEach((m)=>{
-const option = document.createElement("option");
-option.value = m.arquivo;
-option.text = m.nome;
+const option=document.createElement("option");
+option.value=m.arquivo;
+option.text=m.nome;
 selector.appendChild(option);
 });
 
-const randomIndex = Math.floor(Math.random()*musicas.length);
-player.src = musicas[randomIndex].arquivo;
-selector.selectedIndex = randomIndex;
+const randomIndex=Math.floor(Math.random()*musicas.length);
+player.src=musicas[randomIndex].arquivo;
+selector.selectedIndex=randomIndex;
 
-selector.addEventListener("change", ()=>{
-player.src = selector.value;
+selector.addEventListener("change",()=>{
+player.src=selector.value;
 player.play();
 });
 
-player.volume = 0.3;
+player.volume=0.3;
 player.play().catch(()=>{});
 
 </script>
