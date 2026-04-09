@@ -51,8 +51,8 @@ to{opacity:1;}
 /* CONTAINER */
 .container{
 text-align:center;
-z-index:10;
 position:relative;
+z-index:50;
 }
 
 /* NOME */
@@ -61,35 +61,41 @@ display:flex;
 align-items:center;
 justify-content:center;
 gap:15px;
-margin-bottom:30px;
+margin-bottom:40px;
 }
 
 .nome{
 font-family:'Great Vibes', cursive;
-font-size:4rem;
+font-size:4.2rem;
+line-height:1.2;
+padding:5px 10px;
 background: linear-gradient(90deg, #66c2ff, #66ff99, #ff9933);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
-text-shadow: 0 0 15px rgba(255,255,255,0.2);
+text-shadow: 0 0 20px rgba(255,255,255,0.25);
 }
 
+/* GIRASSOL */
 .girassol{
-font-size:2rem;
-filter: drop-shadow(0 0 8px rgba(255, 200, 0, 0.6));
+font-size:2.2rem;
+filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.7));
 animation: girassolPulse 2s infinite alternate;
 }
 
 @keyframes girassolPulse{
 from{transform:scale(1);}
-to{transform:scale(1.15);}
+to{transform:scale(1.12);}
 }
 
-/* CONTADOR */
+/* CONTADOR (AGORA BLOQUEADO TOTAL) */
 .contador{
-background: rgba(168, 216, 255, 0.08);
+background:#0a0a0a;
 padding:25px;
 border-radius:15px;
 border:1px solid rgba(182, 245, 201, 0.3);
+position:relative;
+z-index:100; /* SEMPRE NA FRENTE */
+box-shadow:0 0 25px rgba(0,0,0,0.9);
 }
 
 .tempo{
@@ -97,7 +103,7 @@ margin-top:10px;
 font-size:1.3rem;
 }
 
-/* CORAÇÕES + GIRASSOL */
+/* FLOAT */
 .float{
 position:fixed;
 bottom:-20px;
@@ -123,6 +129,7 @@ animation:fadeMove 15s ease-in-out forwards;
 max-width:260px;
 text-align:center;
 z-index:2;
+pointer-events:none;
 }
 
 @keyframes fadeMove{
@@ -137,7 +144,7 @@ z-index:2;
 position:fixed;
 top:20px;
 right:20px;
-z-index:20;
+z-index:200;
 }
 
 .player select{
@@ -178,8 +185,8 @@ Estamos juntos há:
 
 <script>
 
-/* ESTRELAS COLORIDAS */
-const cores = ["#66c2ff","#66ff99","#ffd966","#ffffff"];
+/* ESTRELAS */
+const cores=["#66c2ff","#66ff99","#ffd966","#ffffff"];
 
 for(let i=0;i<80;i++){
 const estrela=document.createElement("div");
@@ -215,7 +222,7 @@ ${horas}h ${minutos}m ${segundos}s`;
 setInterval(atualizarTempo,1000);
 atualizarTempo();
 
-/* FLOAT (CORAÇÕES + GIRASSOL) */
+/* FLOAT MAIS SUAVE */
 const simbolos=["❤️","🌻"];
 
 function criarFloat(){
@@ -224,16 +231,16 @@ el.className="float";
 el.innerHTML=simbolos[Math.floor(Math.random()*simbolos.length)];
 
 el.style.left=Math.random()*100+"vw";
-el.style.animationDuration=(6+Math.random()*4)+"s";
+el.style.animationDuration=(10+Math.random()*5)+"s";
 
 document.body.appendChild(el);
 
-setTimeout(()=>el.remove(),10000);
+setTimeout(()=>el.remove(),15000);
 }
 
-setInterval(criarFloat,600);
+setInterval(criarFloat,1200);
 
-/* FRASES */
+/* FRASES ORGANIZADAS */
 const frases=[
 "Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso 🌻",
 "Você não é só parte dos meus dias… você é o melhor deles ❤️",
@@ -271,7 +278,7 @@ document.body.appendChild(frase);
 setTimeout(()=>frase.remove(),15000);
 }
 
-setInterval(criarFrase,5000);
+setInterval(criarFrase,6000);
 
 /* MÚSICAS */
 const musicas=[
