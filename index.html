@@ -25,7 +25,7 @@ height:100vh;
 overflow:hidden;
 }
 
-/* CONTAINER CENTRAL */
+/* CONTAINER */
 .container{
 text-align:center;
 z-index:10;
@@ -41,7 +41,7 @@ margin-bottom:30px;
 
 /* CONTADOR */
 .contador{
-background:#111; /* AGORA SÓLIDO */
+background:#111;
 padding:25px;
 border-radius:15px;
 border:1px solid rgba(255,255,255,0.2);
@@ -74,24 +74,53 @@ position:fixed;
 font-family:'Great Vibes', cursive;
 font-size:1.5rem;
 opacity:0;
-animation:fade 15s ease-in-out forwards;
+animation:fadeMove 15s ease-in-out forwards;
 max-width:260px;
 text-align:center;
 pointer-events:none;
 z-index:2;
 }
 
-@keyframes fade{
-0%{opacity:0;}
-20%{opacity:1;}
+@keyframes fadeMove{
+0%{opacity:0; transform:translateX(-20px);}
+20%{opacity:1; transform:translateX(0);}
 80%{opacity:1;}
-100%{opacity:0;}
+100%{opacity:0; transform:translateX(20px);}
+}
+
+/* PLAYER */
+.player{
+position:fixed;
+top:20px;
+right:20px;
+z-index:20;
+}
+
+.player select{
+background:#111;
+color:white;
+border:1px solid rgba(255,255,255,0.2);
+padding:5px;
+border-radius:5px;
+}
+
+/* TIMELINE (base futura) */
+.timeline{
+position:fixed;
+bottom:20px;
+left:20px;
+font-size:0.9rem;
+opacity:0.5;
 }
 
 </style>
 </head>
 
 <body>
+
+<div class="player">
+<select id="musicSelector"></select>
+</div>
 
 <div class="container">
 
@@ -105,6 +134,12 @@ Estamos juntos há:
 </div>
 
 </div>
+
+<div class="timeline">
+(em breve nossos momentos 💖)
+</div>
+
+<audio id="musica" loop></audio>
 
 <script>
 
@@ -146,14 +181,13 @@ setTimeout(()=>heart.remove(),10000);
 
 setInterval(criarCoracao,600);
 
-/* FRASES ORGANIZADAS */
+/* FRASES */
 const frases = [
 "Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso.",
 "Você não é só parte dos meus dias… você é o melhor deles.",
 "O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você."
 ];
 
-/* POSIÇÕES FIXAS */
 const posicoes = [
 {top:"5%", left:"5%"},
 {top:"5%", right:"5%"},
@@ -166,7 +200,6 @@ const posicoes = [
 let indexPosicao = 0;
 
 function criarFrase(){
-
 const frase = document.createElement("div");
 frase.className = "frase";
 
@@ -175,7 +208,6 @@ frase.innerText = frases[Math.floor(Math.random()*frases.length)];
 const pos = posicoes[indexPosicao];
 indexPosicao = (indexPosicao + 1) % posicoes.length;
 
-/* aplica posição */
 for(let key in pos){
 frase.style[key] = pos[key];
 }
@@ -186,6 +218,39 @@ setTimeout(()=>frase.remove(),15000);
 }
 
 setInterval(criarFrase,5000);
+
+/* MÚSICAS (PRONTO PRA USO) */
+const musicas = [
+{nome:"Música 1", arquivo:"musica1.mp3"},
+{nome:"Música 2", arquivo:"musica2.mp3"},
+{nome:"Música 3", arquivo:"musica3.mp3"}
+];
+
+const player = document.getElementById("musica");
+const selector = document.getElementById("musicSelector");
+
+/* POPULAR SELECT */
+musicas.forEach((m, i)=>{
+const option = document.createElement("option");
+option.value = m.arquivo;
+option.text = m.nome;
+selector.appendChild(option);
+});
+
+/* TOCAR ALEATÓRIA */
+const randomIndex = Math.floor(Math.random()*musicas.length);
+player.src = musicas[randomIndex].arquivo;
+selector.selectedIndex = randomIndex;
+
+/* TROCAR MANUAL */
+selector.addEventListener("change", ()=>{
+player.src = selector.value;
+player.play();
+});
+
+/* AUTOPLAY */
+player.volume = 0.3;
+player.play().catch(()=>{});
 
 </script>
 
