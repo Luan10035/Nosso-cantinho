@@ -25,13 +25,14 @@ height:100vh;
 overflow:hidden;
 }
 
-/* CONTAINER */
+/* CONTAINER CENTRAL */
 .container{
 text-align:center;
+z-index:10;
 position:relative;
 }
 
-/* NOME PRINCIPAL */
+/* NOME */
 .nome{
 font-family:'Great Vibes', cursive;
 font-size:4rem;
@@ -40,10 +41,10 @@ margin-bottom:30px;
 
 /* CONTADOR */
 .contador{
-background:rgba(255,255,255,0.08);
+background:#111; /* AGORA SÓLIDO */
 padding:25px;
 border-radius:15px;
-backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.2);
 }
 
 .tempo{
@@ -57,7 +58,7 @@ position:fixed;
 bottom:-20px;
 font-size:22px;
 animation:subir linear forwards;
-z-index:0;
+z-index:1;
 pointer-events:none;
 }
 
@@ -67,23 +68,24 @@ pointer-events:none;
 100%{transform:translateY(-120vh);opacity:0;}
 }
 
-/* FRASES DINÂMICAS */
+/* FRASES */
 .frase{
 position:fixed;
 font-family:'Great Vibes', cursive;
 font-size:1.5rem;
 opacity:0;
-animation:fade 10s ease-in-out forwards;
-max-width:280px;
+animation:fade 15s ease-in-out forwards;
+max-width:260px;
 text-align:center;
 pointer-events:none;
+z-index:2;
 }
 
 @keyframes fade{
-0%{opacity:0; transform:translateY(20px);}
+0%{opacity:0;}
 20%{opacity:1;}
 80%{opacity:1;}
-100%{opacity:0; transform:translateY(-20px);}
+100%{opacity:0;}
 }
 
 </style>
@@ -128,7 +130,7 @@ ${horas}h ${minutos}m ${segundos}s`;
 setInterval(atualizarTempo,1000);
 atualizarTempo();
 
-/* CORAÇÕES (CORRIGIDO) */
+/* CORAÇÕES */
 function criarCoracao(){
 const heart = document.createElement("div");
 heart.className = "heart";
@@ -142,30 +144,48 @@ document.body.appendChild(heart);
 setTimeout(()=>heart.remove(),10000);
 }
 
-setInterval(criarCoracao,500);
+setInterval(criarCoracao,600);
 
-/* FRASES (DINÂMICAS) */
+/* FRASES ORGANIZADAS */
 const frases = [
 "Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso.",
 "Você não é só parte dos meus dias… você é o melhor deles.",
 "O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você."
 ];
 
+/* POSIÇÕES FIXAS */
+const posicoes = [
+{top:"5%", left:"5%"},
+{top:"5%", right:"5%"},
+{top:"30%", left:"5%"},
+{top:"30%", right:"5%"},
+{bottom:"10%", left:"5%"},
+{bottom:"10%", right:"5%"}
+];
+
+let indexPosicao = 0;
+
 function criarFrase(){
+
 const frase = document.createElement("div");
 frase.className = "frase";
 
 frase.innerText = frases[Math.floor(Math.random()*frases.length)];
 
-frase.style.left = Math.random()*80 + "vw";
-frase.style.top = Math.random()*80 + "vh";
+const pos = posicoes[indexPosicao];
+indexPosicao = (indexPosicao + 1) % posicoes.length;
+
+/* aplica posição */
+for(let key in pos){
+frase.style[key] = pos[key];
+}
 
 document.body.appendChild(frase);
 
-setTimeout(()=>frase.remove(),10000);
+setTimeout(()=>frase.remove(),15000);
 }
 
-setInterval(criarFrase,4000);
+setInterval(criarFrase,5000);
 
 </script>
 
