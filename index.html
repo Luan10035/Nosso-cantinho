@@ -8,11 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 background:#000;
@@ -23,6 +19,39 @@ justify-content:center;
 align-items:center;
 height:100vh;
 overflow:hidden;
+opacity:0;
+animation:fadeIn 2s ease forwards;
+}
+
+/* FADE GERAL */
+@keyframes fadeIn{
+to{opacity:1;}
+}
+
+/* ESTRELAS */
+.estrelas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+overflow:hidden;
+}
+
+.estrela{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+opacity:0.8;
+animation:piscar 2s infinite alternate;
+}
+
+@keyframes piscar{
+from{opacity:0.2;}
+to{opacity:1;}
 }
 
 /* CONTAINER */
@@ -104,19 +133,12 @@ padding:5px;
 border-radius:5px;
 }
 
-/* TIMELINE (base futura) */
-.timeline{
-position:fixed;
-bottom:20px;
-left:20px;
-font-size:0.9rem;
-opacity:0.5;
-}
-
 </style>
 </head>
 
 <body>
+
+<div class="estrelas" id="estrelas"></div>
 
 <div class="player">
 <select id="musicSelector"></select>
@@ -135,13 +157,21 @@ Estamos juntos há:
 
 </div>
 
-<div class="timeline">
-(em breve nossos momentos 💖)
-</div>
-
 <audio id="musica" loop></audio>
 
 <script>
+
+/* ESTRELAS */
+const estrelasContainer = document.getElementById("estrelas");
+
+for(let i=0;i<80;i++){
+const estrela = document.createElement("div");
+estrela.className="estrela";
+estrela.style.top=Math.random()*100+"%";
+estrela.style.left=Math.random()*100+"%";
+estrela.style.animationDuration=(1+Math.random()*2)+"s";
+estrelasContainer.appendChild(estrela);
+}
 
 /* CONTADOR */
 const dataInicio = new Date("2026-03-02");
@@ -219,7 +249,7 @@ setTimeout(()=>frase.remove(),15000);
 
 setInterval(criarFrase,5000);
 
-/* MÚSICAS (PRONTO PRA USO) */
+/* MÚSICAS */
 const musicas = [
 {nome:"Música 1", arquivo:"musica1.mp3"},
 {nome:"Música 2", arquivo:"musica2.mp3"},
@@ -229,26 +259,22 @@ const musicas = [
 const player = document.getElementById("musica");
 const selector = document.getElementById("musicSelector");
 
-/* POPULAR SELECT */
-musicas.forEach((m, i)=>{
+musicas.forEach((m)=>{
 const option = document.createElement("option");
 option.value = m.arquivo;
 option.text = m.nome;
 selector.appendChild(option);
 });
 
-/* TOCAR ALEATÓRIA */
 const randomIndex = Math.floor(Math.random()*musicas.length);
 player.src = musicas[randomIndex].arquivo;
 selector.selectedIndex = randomIndex;
 
-/* TROCAR MANUAL */
 selector.addEventListener("change", ()=>{
 player.src = selector.value;
 player.play();
 });
 
-/* AUTOPLAY */
 player.volume = 0.3;
 player.play().catch(()=>{});
 
