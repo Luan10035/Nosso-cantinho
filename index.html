@@ -23,16 +23,12 @@ opacity:0;
 animation:fadeIn 2s ease forwards;
 }
 
-@keyframes fadeIn{
-to{opacity:1;}
-}
+@keyframes fadeIn{to{opacity:1;}}
 
 /* FUNDO */
 body::before{
 content:"";
 position:absolute;
-top:0;
-left:0;
 width:100%;
 height:100%;
 background:
@@ -66,8 +62,8 @@ to{opacity:1;}
 /* CONTAINER */
 .container{
 text-align:center;
-position:relative;
 z-index:50;
+position:relative;
 }
 
 /* NOME */
@@ -82,23 +78,9 @@ margin-bottom:40px;
 .nome{
 font-family:'Great Vibes', cursive;
 font-size:4.2rem;
-line-height:1.2;
-padding:5px 10px;
 background: linear-gradient(90deg, #66c2ff, #66ff99, #ff9933);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
-text-shadow: 0 0 20px rgba(255,255,255,0.3);
-}
-
-.girassol{
-font-size:2.2rem;
-filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.7));
-animation: girassolPulse 2s infinite alternate;
-}
-
-@keyframes girassolPulse{
-from{transform:scale(1);}
-to{transform:scale(1.12);}
 }
 
 /* CONTADOR */
@@ -110,10 +92,9 @@ border-radius:15px;
 border:1px solid rgba(255,255,255,0.25);
 z-index:100;
 position:relative;
-box-shadow:0 0 15px rgba(0,0,0,0.3);
 }
 
-/* FLOAT ICONS */
+/* FLOAT */
 .float{
 position:fixed;
 bottom:-20px;
@@ -123,14 +104,15 @@ z-index:2;
 pointer-events:none;
 }
 
-/* 📸 FOTO FLOAT (NOVO - SEM QUEBRAR NADA) */
+/* 📸 POLAROID */
 .foto-float{
 position:fixed;
-bottom:-150px;
-width:110px;
+bottom:-180px;
+width:140px;
 background:white;
-padding:6px;
-border-radius:10px;
+padding:8px;
+border-radius:6px;
+box-shadow:0 10px 20px rgba(0,0,0,0.5);
 animation:subir linear forwards;
 z-index:2;
 pointer-events:none;
@@ -138,7 +120,16 @@ pointer-events:none;
 
 .foto-float img{
 width:100%;
-border-radius:8px;
+height:auto;
+display:block;
+border-radius:4px;
+}
+
+/* animações */
+@keyframes subir{
+0%{transform:translateY(0) rotate(0deg);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-120vh) rotate(var(--rot));opacity:0;}
 }
 
 /* FRASES */
@@ -148,22 +139,14 @@ font-family:'Great Vibes', cursive;
 font-size:1.5rem;
 opacity:0;
 animation:fadeMove 15s ease-in-out forwards;
-max-width:260px;
-text-align:center;
 z-index:3;
 }
 
-@keyframes subir{
-0%{transform:translateY(0);opacity:0;}
-10%{opacity:1;}
-100%{transform:translateY(-120vh);opacity:0;}
-}
-
 @keyframes fadeMove{
-0%{opacity:0; transform:translateX(-20px);}
+0%{opacity:0;}
 20%{opacity:1;}
 80%{opacity:1;}
-100%{opacity:0; transform:translateX(20px);}
+100%{opacity:0;}
 }
 
 </style>
@@ -174,51 +157,56 @@ z-index:3;
 <div class="estrelas" id="estrelas"></div>
 
 <div class="container">
-
 <div class="nome-container">
-<span class="girassol">🌻</span>
 <div class="nome">Luan & Girlane</div>
-<span class="girassol">🌻</span>
 </div>
 
 <div class="contador">
 Estamos juntos há:
-<div class="tempo" id="tempo"></div>
+<div id="tempo"></div>
+</div>
 </div>
 
-</div>
+<audio id="musica" loop src="musica1.mp3"></audio>
 
 <script>
 
 /* ESTRELAS */
-const cores=["#66c2ff","#66ff99","#ffd966","#ffffff"];
-
 for(let i=0;i<80;i++){
-const estrela=document.createElement("div");
-estrela.className="estrela";
-
-estrela.style.top=Math.random()*100+"%";
-estrela.style.left=Math.random()*100+"%";
-estrela.style.background=cores[Math.floor(Math.random()*cores.length)];
-estrela.style.animationDuration=(1+Math.random()*2)+"s";
-
-document.getElementById("estrelas").appendChild(estrela);
+const e=document.createElement("div");
+e.className="estrela";
+e.style.top=Math.random()*100+"%";
+e.style.left=Math.random()*100+"%";
+document.getElementById("estrelas").appendChild(e);
 }
 
-/* CONTADOR */
+/* CONTADOR COMPLETO */
 const dataInicio=new Date("2026-03-02");
 
 function atualizarTempo(){
 const agora=new Date();
-const diff=Math.floor((agora-dataInicio)/1000);
+let diff = agora - dataInicio;
 
-const dias=Math.floor(diff/(24*3600));
-const horas=Math.floor((diff%(24*3600))/3600);
-const minutos=Math.floor((diff%3600)/60);
-const segundos=diff%60;
+const anos = Math.floor(diff/(365.25*24*3600*1000));
+diff %= (365.25*24*3600*1000);
 
-document.getElementById("tempo").innerHTML=
-`${dias} dias ${horas}h ${minutos}m ${segundos}s`;
+const meses = Math.floor(diff/(30.44*24*3600*1000));
+diff %= (30.44*24*3600*1000);
+
+const dias = Math.floor(diff/(24*3600*1000));
+diff %= (24*3600*1000);
+
+const horas = Math.floor(diff/(3600*1000));
+diff %= (3600*1000);
+
+const minutos = Math.floor(diff/(60*1000));
+diff %= (60*1000);
+
+const segundos = Math.floor(diff/1000);
+
+document.getElementById("tempo").innerHTML =
+`${anos} anos, ${meses} meses, ${dias} dias<br>
+${horas}h ${minutos}m ${segundos}s`;
 }
 
 setInterval(atualizarTempo,1000);
@@ -230,37 +218,32 @@ function criarFloat(){
 const el=document.createElement("div");
 el.className="float";
 el.innerHTML=simbolos[Math.floor(Math.random()*simbolos.length)];
-
 el.style.left=Math.random()*100+"vw";
 el.style.animationDuration=(10+Math.random()*5)+"s";
-
 document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 }
 setInterval(criarFloat,1200);
 
-/* 📸 SUAS 7 FOTOS (INTEGRADO CORRETAMENTE) */
+/* 📸 FOTOS */
 const fotos=[
-"foto1.jpeg",
-"foto2.jpeg",
-"foto3.jpeg",
-"foto4.jpeg",
-"foto5.jpeg",
-"foto6.jpeg",
-"foto7.jpeg"
+"foto1.jpeg","foto2.jpeg","foto3.jpeg",
+"foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"
 ];
 
 function criarFoto(){
 const div=document.createElement("div");
 div.className="foto-float";
 
-/* evita centro (cronômetro) */
-const lado = Math.random() < 0.5 ? 
-Math.random()*20 : 
-80 + Math.random()*20;
-
+/* evita centro */
+const lado = Math.random()<0.5 ? Math.random()*20 : 80+Math.random()*20;
 div.style.left=lado+"vw";
-div.style.animationDuration=(12+Math.random()*6)+"s";
+
+/* rotação natural */
+const rot = (Math.random()*10 - 5)+"deg";
+div.style.setProperty('--rot', rot);
+
+div.style.animationDuration=(14+Math.random()*6)+"s";
 
 div.innerHTML=`<img src="${fotos[Math.floor(Math.random()*fotos.length)]}">`;
 
@@ -268,7 +251,6 @@ document.body.appendChild(div);
 setTimeout(()=>div.remove(),20000);
 }
 
-/* frequência controlada */
 setInterval(criarFoto,6000);
 
 /* FRASES */
@@ -278,35 +260,24 @@ const frases=[
 "O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você 💫"
 ];
 
-const posicoes=[
-{top:"5%",left:"5%"},
-{top:"5%",right:"5%"},
-{top:"30%",left:"5%"},
-{top:"30%",right:"5%"},
-{bottom:"10%",left:"5%"},
-{bottom:"10%",right:"5%"}
-];
-
-let indexPos=0;
-
 function criarFrase(){
-const frase=document.createElement("div");
-frase.className="frase";
+const f=document.createElement("div");
+f.className="frase";
+f.innerText=frases[Math.floor(Math.random()*frases.length)];
 
-frase.innerText=frases[Math.floor(Math.random()*frases.length)];
+f.style.top=Math.random()*80+"vh";
+f.style.left=Math.random()*80+"vw";
 
-const pos=posicoes[indexPos];
-indexPos=(indexPos+1)%posicoes.length;
-
-for(let key in pos){
-frase.style[key]=pos[key];
-}
-
-document.body.appendChild(frase);
-setTimeout(()=>frase.remove(),15000);
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),15000);
 }
 
 setInterval(criarFrase,6000);
+
+/* MÚSICA */
+const musica=document.getElementById("musica");
+musica.volume=0.3;
+musica.play().catch(()=>{});
 
 </script>
 
