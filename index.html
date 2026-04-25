@@ -120,21 +120,15 @@ z-index:2;
 pointer-events:none;
 }
 
-@keyframes subir{
-0%{transform:translateY(0);opacity:0;}
-10%{opacity:1;}
-100%{transform:translateY(-120vh);opacity:0;}
-}
-
-/* POLAROID */
+/* 📸 POLAROID AJUSTADO */
 .foto-float{
 position:fixed;
-bottom:-180px;
-width:130px;
+bottom:-200px;
+width:170px;
 background:white;
-padding:6px;
+padding:8px;
 border-radius:8px;
-box-shadow:0 10px 20px rgba(0,0,0,0.6);
+box-shadow:0 12px 25px rgba(0,0,0,0.6);
 animation:subir linear forwards;
 z-index:2;
 pointer-events:none;
@@ -144,6 +138,13 @@ pointer-events:none;
 width:100%;
 height:auto;
 border-radius:6px;
+}
+
+/* ANIMAÇÃO CORRIGIDA */
+@keyframes subir{
+0%{transform:translateY(0);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-140vh);opacity:1;}
 }
 
 /* FRASES */
@@ -241,23 +242,28 @@ setTimeout(()=>el.remove(),15000);
 }
 setInterval(criarFloat,1200);
 
-/* FOTOS */
+/* 📸 FOTOS */
 const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"];
 
 function criarFoto(){
 const div=document.createElement("div");
 div.className="foto-float";
 
+/* laterais */
 const lado=Math.random()<0.5 ? Math.random()*20 : 80+Math.random()*20;
 div.style.left=lado+"vw";
 
-div.style.animationDuration=(14+Math.random()*6)+"s";
+/* tempo mais suave */
+div.style.animationDuration=(18+Math.random()*6)+"s";
 
 div.innerHTML=`<img src="${fotos[Math.floor(Math.random()*fotos.length)]}">`;
 
 document.body.appendChild(div);
-setTimeout(()=>div.remove(),20000);
+
+/* remove só depois que sair da tela */
+setTimeout(()=>div.remove(),26000);
 }
+
 setInterval(criarFoto,6000);
 
 /* FRASES */
@@ -278,13 +284,13 @@ f.style.left=Math.random()*80+"vw";
 document.body.appendChild(f);
 setTimeout(()=>f.remove(),15000);
 }
+
 setInterval(criarFrase,6000);
 
-/* 🎵 MÚSICA CORRIGIDA */
+/* 🎵 MÚSICA */
 const musica=document.getElementById("musica");
 musica.volume=0.3;
 
-/* tenta autoplay */
 musica.play().catch(()=>{
 document.body.addEventListener("click",()=>{
 musica.play();
