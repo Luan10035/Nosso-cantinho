@@ -79,7 +79,6 @@ background: linear-gradient(90deg, #66c2ff, #66ff99, #ff9933);
 -webkit-text-fill-color: transparent;
 }
 
-/* GIRASSOL MAIS BONITO */
 .girassol{
 font-size:3rem;
 filter: drop-shadow(0 0 10px rgba(255,200,0,0.8));
@@ -107,7 +106,7 @@ font-size:1.5rem;
 margin-top:10px;
 }
 
-/* FLOAT ICONS (ATRÁS DAS FOTOS) */
+/* FLOAT ICONS */
 .float{
 position:fixed;
 bottom:-20px;
@@ -117,7 +116,7 @@ z-index:2;
 pointer-events:none;
 }
 
-/* 📸 FOTO (AGORA NA FRENTE) */
+/* FOTO */
 .foto-float{
 position:fixed;
 bottom:-200px;
@@ -126,9 +125,9 @@ background:white;
 padding:8px;
 border-radius:8px;
 box-shadow:0 20px 40px rgba(0,0,0,0.7);
-z-index:10; /* FRENTE DE TUDO */
+z-index:10;
 pointer-events:none;
-animation:subirFoto linear forwards;
+animation:subirFoto 20s linear forwards;
 }
 
 .foto-float img{
@@ -136,21 +135,19 @@ width:100%;
 border-radius:6px;
 }
 
-/* SUBIDA FOTO */
 @keyframes subirFoto{
 0%{transform:translateY(0);opacity:0;}
 10%{opacity:1;}
 100%{transform:translateY(-140vh);opacity:1;}
 }
 
-/* FLOAT PADRÃO */
 @keyframes subir{
 0%{transform:translateY(0);opacity:0;}
 10%{opacity:1;}
 100%{transform:translateY(-130vh);opacity:0;}
 }
 
-/* FRASES (EVITA CENTRO) */
+/* FRASES */
 .frase{
 position:fixed;
 font-family:'Great Vibes', cursive;
@@ -247,37 +244,38 @@ setTimeout(()=>el.remove(),15000);
 }
 setInterval(criarFloat,1200);
 
-/* 📸 CONTROLE DE FILA DE FOTOS */
-let fotoAtiva=false;
-
+/* 📸 SISTEMA CINEMATOGRÁFICO */
 const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"];
 
-function criarFoto(){
-if(fotoAtiva) return;
+let ladoToggle = true;
 
-fotoAtiva=true;
+function criarFoto(){
 
 const div=document.createElement("div");
 div.className="foto-float";
 
-/* MAIS CENTRAL */
-div.style.left=(30 + Math.random()*40)+"vw";
+/* alterna lados */
+let posX;
+if(ladoToggle){
+posX = 35 + Math.random()*15;
+}else{
+posX = 50 + Math.random()*15;
+}
+ladoToggle = !ladoToggle;
 
-div.style.animationDuration="20s";
+div.style.left=posX+"vw";
 
 div.innerHTML=`<img src="${fotos[Math.floor(Math.random()*fotos.length)]}">`;
 
 document.body.appendChild(div);
 
-setTimeout(()=>{
-div.remove();
-fotoAtiva=false;
-},20000);
+setTimeout(()=>div.remove(),20000);
 }
 
-setInterval(criarFoto,7000);
+/* fluxo contínuo inteligente */
+setInterval(criarFoto,3500);
 
-/* FRASES (FORA DO CENTRO) */
+/* FRASES */
 const posicoes=[
 {top:"5%",left:"5%"},
 {top:"5%",right:"5%"},
