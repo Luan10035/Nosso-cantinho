@@ -120,14 +120,16 @@ border-radius:6px;
 100%{transform:translateY(-140vh);opacity:1;}
 }
 
-/* frases */
+/* FRASES (AJUSTADAS) */
 .frase{
 position:fixed;
 font-family:'Great Vibes', cursive;
-font-size:1.5rem;
+font-size:1.9rem;
 opacity:0;
 animation:fadeMove 15s ease-in-out forwards;
 z-index:3;
+max-width:280px;
+text-align:center;
 }
 
 @keyframes fadeMove{
@@ -211,12 +213,12 @@ document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 },1200);
 
-/* 📸 SISTEMA INTELIGENTE */
+/* FOTOS (INTACTO) */
 const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"];
 
 let fotosAtivas=0;
 let ultimaFoto=null;
-let lado=0; // 0 esquerda, 1 direita, 2 meio
+let lado=0;
 
 function pegarFoto(){
 let nova;
@@ -228,7 +230,6 @@ return nova;
 }
 
 function criarFoto(){
-
 if(fotosAtivas>=3) return;
 
 fotosAtivas++;
@@ -236,7 +237,6 @@ fotosAtivas++;
 const div=document.createElement("div");
 div.className="foto-float";
 
-/* POSIÇÃO ORGANIZADA */
 let pos;
 if(lado===0) pos=30;
 if(lado===1) pos=60;
@@ -256,28 +256,53 @@ div.remove();
 fotosAtivas--;
 },20000);
 }
-
-/* fluxo inteligente */
 setInterval(criarFoto,4500);
 
-/* FRASES */
+/* FRASES (CORRIGIDAS) */
+
 const frases=[
 "Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso 🌻",
 "Você não é só parte dos meus dias… você é o melhor deles ❤️",
 "O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você 💫"
 ];
 
-setInterval(()=>{
+const posicoesFrases=[
+{top:"5%", left:"5%"},
+{top:"5%", right:"5%"},
+{bottom:"10%", left:"5%"},
+{bottom:"10%", right:"5%"}
+];
+
+let indexFrase=0;
+let fraseAtiva=false;
+
+function criarFrase(){
+
+if(fraseAtiva) return;
+
+fraseAtiva=true;
+
 const f=document.createElement("div");
 f.className="frase";
+
 f.innerText=frases[Math.floor(Math.random()*frases.length)];
 
-f.style.top=(Math.random()<0.5?"5%":"80%");
-f.style.left=(Math.random()<0.5?"5%":"75%");
+const pos=posicoesFrases[indexFrase];
+indexFrase=(indexFrase+1)%posicoesFrases.length;
+
+for(let key in pos){
+f.style[key]=pos[key];
+}
 
 document.body.appendChild(f);
-setTimeout(()=>f.remove(),15000);
-},6000);
+
+setTimeout(()=>{
+f.remove();
+fraseAtiva=false;
+},15000);
+}
+
+setInterval(criarFrase,7000);
 
 /* MÚSICA */
 const musica=document.getElementById("musica");
