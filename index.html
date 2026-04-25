@@ -120,18 +120,21 @@ z-index:2;
 pointer-events:none;
 }
 
-/* 📸 POLAROID AJUSTADO */
+/* 📸 FOTO CINEMATOGRÁFICA */
 .foto-float{
 position:fixed;
 bottom:-200px;
-width:170px;
+width:180px;
 background:white;
 padding:8px;
 border-radius:8px;
-box-shadow:0 12px 25px rgba(0,0,0,0.6);
-animation:subir linear forwards;
+box-shadow:0 20px 40px rgba(0,0,0,0.7);
 z-index:2;
 pointer-events:none;
+
+/* animação combinada */
+animation:subirCinema var(--dur) linear forwards,
+           balanco 6s ease-in-out infinite alternate;
 }
 
 .foto-float img{
@@ -140,11 +143,30 @@ height:auto;
 border-radius:6px;
 }
 
-/* ANIMAÇÃO CORRIGIDA */
+/* SUBIDA */
+@keyframes subirCinema{
+0%{
+transform:translateY(0) rotate(var(--rot)) scale(0.95);
+opacity:0;
+}
+10%{opacity:1;}
+100%{
+transform:translateY(-140vh) rotate(calc(var(--rot) + 5deg)) scale(1.05);
+opacity:1;
+}
+}
+
+/* BALANÇO */
+@keyframes balanco{
+from{transform:translateX(-5px) rotate(var(--rot));}
+to{transform:translateX(5px) rotate(calc(var(--rot) + 2deg));}
+}
+
+/* FLOAT PADRÃO */
 @keyframes subir{
 0%{transform:translateY(0);opacity:0;}
 10%{opacity:1;}
-100%{transform:translateY(-140vh);opacity:1;}
+100%{transform:translateY(-120vh);opacity:0;}
 }
 
 /* FRASES */
@@ -242,7 +264,7 @@ setTimeout(()=>el.remove(),15000);
 }
 setInterval(criarFloat,1200);
 
-/* 📸 FOTOS */
+/* 📸 FOTOS CINEMATOGRÁFICAS */
 const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"];
 
 function criarFoto(){
@@ -253,14 +275,17 @@ div.className="foto-float";
 const lado=Math.random()<0.5 ? Math.random()*20 : 80+Math.random()*20;
 div.style.left=lado+"vw";
 
-/* tempo mais suave */
-div.style.animationDuration=(18+Math.random()*6)+"s";
+/* rotação natural */
+const rot=(Math.random()*10-5)+"deg";
+div.style.setProperty('--rot',rot);
+
+/* duração dinâmica */
+const dur=(18+Math.random()*6)+"s";
+div.style.setProperty('--dur',dur);
 
 div.innerHTML=`<img src="${fotos[Math.floor(Math.random()*fotos.length)]}">`;
 
 document.body.appendChild(div);
-
-/* remove só depois que sair da tela */
 setTimeout(()=>div.remove(),26000);
 }
 
