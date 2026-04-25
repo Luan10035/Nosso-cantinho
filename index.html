@@ -82,46 +82,27 @@ margin-bottom:40px;
 .nome{
 font-family:'Great Vibes', cursive;
 font-size:4.2rem;
-line-height:1.2;
-padding:5px 10px;
 background: linear-gradient(90deg, #66c2ff, #66ff99, #ff9933);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
-text-shadow: 0 0 20px rgba(255,255,255,0.3);
 }
 
 .girassol{
 font-size:2.2rem;
-filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.7));
-animation: girassolPulse 2s infinite alternate;
 }
 
-@keyframes girassolPulse{
-from{transform:scale(1);}
-to{transform:scale(1.12);}
-}
-
-/* 🔥 CONTADOR AJUSTADO */
+/* CONTADOR */
 .contador{
-background: rgba(10,10,10,0.15); /* MAIS TRANSPARENTE AINDA */
-backdrop-filter: blur(2px); /* QUASE SEM BORRÃO */
--webkit-backdrop-filter: blur(2px);
-
+background: rgba(10,10,10,0.15);
+backdrop-filter: blur(2px);
 padding:25px;
 border-radius:15px;
 border:1px solid rgba(255,255,255,0.25);
 z-index:100;
 position:relative;
-
-box-shadow:0 0 15px rgba(0,0,0,0.3);
 }
 
-.tempo{
-margin-top:10px;
-font-size:1.3rem;
-}
-
-/* FLOAT */
+/* FLOAT ICONS */
 .float{
 position:fixed;
 bottom:-20px;
@@ -131,10 +112,29 @@ z-index:2;
 pointer-events:none;
 }
 
+/* FOTO FLOAT */
+.foto-float{
+position:fixed;
+bottom:-150px;
+width:120px;
+background:white;
+padding:6px;
+border-radius:10px;
+animation:subir linear forwards;
+z-index:2;
+pointer-events:none;
+transform:rotate(-5deg);
+}
+
+.foto-float img{
+width:100%;
+border-radius:8px;
+}
+
 @keyframes subir{
-0%{transform:translateY(0);opacity:0;}
+0%{transform:translateY(0) rotate(0deg);opacity:0;}
 10%{opacity:1;}
-100%{transform:translateY(-120vh);opacity:0;}
+100%{transform:translateY(-120vh) rotate(8deg);opacity:0;}
 }
 
 /* FRASES */
@@ -145,31 +145,14 @@ font-size:1.5rem;
 opacity:0;
 animation:fadeMove 15s ease-in-out forwards;
 max-width:260px;
-text-align:center;
 z-index:3;
 }
 
 @keyframes fadeMove{
-0%{opacity:0; transform:translateX(-20px);}
+0%{opacity:0;}
 20%{opacity:1;}
 80%{opacity:1;}
-100%{opacity:0; transform:translateX(20px);}
-}
-
-/* PLAYER */
-.player{
-position:fixed;
-top:20px;
-right:20px;
-z-index:200;
-}
-
-.player select{
-background:#111;
-color:white;
-border:1px solid rgba(255,255,255,0.2);
-padding:5px;
-border-radius:5px;
+100%{opacity:0;}
 }
 
 </style>
@@ -178,10 +161,6 @@ border-radius:5px;
 <body>
 
 <div class="estrelas" id="estrelas"></div>
-
-<div class="player">
-<select id="musicSelector"></select>
-</div>
 
 <div class="container">
 
@@ -193,28 +172,20 @@ border-radius:5px;
 
 <div class="contador">
 Estamos juntos há:
-<div class="tempo" id="tempo"></div>
+<div id="tempo"></div>
 </div>
 
 </div>
-
-<audio id="musica" loop></audio>
 
 <script>
 
 /* ESTRELAS */
-const cores=["#66c2ff","#66ff99","#ffd966","#ffffff"];
-
 for(let i=0;i<80;i++){
-const estrela=document.createElement("div");
-estrela.className="estrela";
-
-estrela.style.top=Math.random()*100+"%";
-estrela.style.left=Math.random()*100+"%";
-estrela.style.background=cores[Math.floor(Math.random()*cores.length)];
-estrela.style.animationDuration=(1+Math.random()*2)+"s";
-
-document.getElementById("estrelas").appendChild(estrela);
+const e=document.createElement("div");
+e.className="estrela";
+e.style.top=Math.random()*100+"%";
+e.style.left=Math.random()*100+"%";
+document.body.appendChild(e);
 }
 
 /* CONTADOR */
@@ -224,38 +195,58 @@ function atualizarTempo(){
 const agora=new Date();
 const diff=Math.floor((agora-dataInicio)/1000);
 
-const anos=Math.floor(diff/(365.25*24*3600));
-const meses=Math.floor((diff%(365.25*24*3600))/(30.44*24*3600));
-const dias=Math.floor((diff%(30.44*24*3600))/(24*3600));
+const dias=Math.floor(diff/(24*3600));
 const horas=Math.floor((diff%(24*3600))/3600);
 const minutos=Math.floor((diff%3600)/60);
 const segundos=diff%60;
 
 document.getElementById("tempo").innerHTML=
-`${anos} anos, ${meses} meses, ${dias} dias<br>
-${horas}h ${minutos}m ${segundos}s`;
+`${dias} dias ${horas}h ${minutos}m ${segundos}s`;
 }
 
 setInterval(atualizarTempo,1000);
-atualizarTempo();
 
-/* FLOAT */
+/* FLOAT ICONS */
 const simbolos=["❤️","🌻"];
 
 function criarFloat(){
 const el=document.createElement("div");
 el.className="float";
 el.innerHTML=simbolos[Math.floor(Math.random()*simbolos.length)];
-
 el.style.left=Math.random()*100+"vw";
 el.style.animationDuration=(10+Math.random()*5)+"s";
-
 document.body.appendChild(el);
-
 setTimeout(()=>el.remove(),15000);
 }
-
 setInterval(criarFloat,1200);
+
+/* 📸 SUAS 7 FOTOS */
+const fotos=[
+"foto1.jpeg",
+"foto2.jpeg",
+"foto3.jpeg",
+"foto4.jpeg",
+"foto5.jpeg",
+"foto6.jpeg",
+"foto7.jpeg"
+];
+
+function criarFoto(){
+const div=document.createElement("div");
+div.className="foto-float";
+
+div.style.left=Math.random()*80+"vw";
+div.style.animationDuration=(12+Math.random()*6)+"s";
+
+div.innerHTML=`<img src="${fotos[Math.floor(Math.random()*fotos.length)]}">`;
+
+document.body.appendChild(div);
+
+setTimeout(()=>div.remove(),20000);
+}
+
+/* frequência menor pra não poluir */
+setInterval(criarFoto,4000);
 
 /* FRASES */
 const frases=[
@@ -264,43 +255,24 @@ const frases=[
 "O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você 💫"
 ];
 
-const posicoes=[
-{top:"5%",left:"5%"},
-{top:"5%",right:"5%"},
-{top:"30%",left:"5%"},
-{top:"30%",right:"5%"},
-{bottom:"10%",left:"5%"},
-{bottom:"10%",right:"5%"}
-];
-
-let indexPos=0;
-
 function criarFrase(){
-const frase=document.createElement("div");
-frase.className="frase";
+const f=document.createElement("div");
+f.className="frase";
+f.innerText=frases[Math.floor(Math.random()*frases.length)];
 
-frase.innerText=frases[Math.floor(Math.random()*frases.length)];
+f.style.top=Math.random()*80+"vh";
+f.style.left=Math.random()*80+"vw";
 
-const pos=posicoes[indexPos];
-indexPos=(indexPos+1)%posicoes.length;
-
-for(let key in pos){
-frase.style[key]=pos[key];
-}
-
-document.body.appendChild(frase);
-
-setTimeout(()=>frase.remove(),15000);
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),15000);
 }
 
 setInterval(criarFrase,6000);
 
-/* MÚSICA */
-const player=document.getElementById("musica");
-player.src="standbyme.mp3";
-player.volume=0.3;
-player.play().catch(()=>{});
+</script>
 
+</body>
+</html>
 </script>
 
 </body>
