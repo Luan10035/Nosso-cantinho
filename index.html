@@ -51,6 +51,7 @@ position:absolute;
 width:2px;
 height:2px;
 border-radius:50%;
+background:white;
 animation:piscar 2s infinite alternate;
 }
 
@@ -83,6 +84,16 @@ background: linear-gradient(90deg, #66c2ff, #66ff99, #ff9933);
 -webkit-text-fill-color: transparent;
 }
 
+.girassol{
+font-size:2.2rem;
+animation:pulse 2s infinite alternate;
+}
+
+@keyframes pulse{
+from{transform:scale(1);}
+to{transform:scale(1.1);}
+}
+
 /* CONTADOR */
 .contador{
 background: rgba(10,10,10,0.15);
@@ -94,7 +105,12 @@ z-index:100;
 position:relative;
 }
 
-/* FLOAT */
+.tempo{
+font-size:1.4rem;
+margin-top:10px;
+}
+
+/* FLOAT ICONS */
 .float{
 position:fixed;
 bottom:-20px;
@@ -104,15 +120,21 @@ z-index:2;
 pointer-events:none;
 }
 
-/* 📸 POLAROID */
+@keyframes subir{
+0%{transform:translateY(0);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-120vh);opacity:0;}
+}
+
+/* POLAROID */
 .foto-float{
 position:fixed;
 bottom:-180px;
-width:140px;
+width:130px;
 background:white;
-padding:8px;
-border-radius:6px;
-box-shadow:0 10px 20px rgba(0,0,0,0.5);
+padding:6px;
+border-radius:8px;
+box-shadow:0 10px 20px rgba(0,0,0,0.6);
 animation:subir linear forwards;
 z-index:2;
 pointer-events:none;
@@ -121,15 +143,7 @@ pointer-events:none;
 .foto-float img{
 width:100%;
 height:auto;
-display:block;
-border-radius:4px;
-}
-
-/* animações */
-@keyframes subir{
-0%{transform:translateY(0) rotate(0deg);opacity:0;}
-10%{opacity:1;}
-100%{transform:translateY(-120vh) rotate(var(--rot));opacity:0;}
+border-radius:6px;
 }
 
 /* FRASES */
@@ -158,12 +172,14 @@ z-index:3;
 
 <div class="container">
 <div class="nome-container">
+<span class="girassol">🌻</span>
 <div class="nome">Luan & Girlane</div>
+<span class="girassol">🌻</span>
 </div>
 
 <div class="contador">
 Estamos juntos há:
-<div id="tempo"></div>
+<div class="tempo" id="tempo"></div>
 </div>
 </div>
 
@@ -180,31 +196,31 @@ e.style.left=Math.random()*100+"%";
 document.getElementById("estrelas").appendChild(e);
 }
 
-/* CONTADOR COMPLETO */
+/* CONTADOR */
 const dataInicio=new Date("2026-03-02");
 
 function atualizarTempo(){
 const agora=new Date();
-let diff = agora - dataInicio;
+let diff=agora-dataInicio;
 
-const anos = Math.floor(diff/(365.25*24*3600*1000));
-diff %= (365.25*24*3600*1000);
+const anos=Math.floor(diff/(365.25*24*3600*1000));
+diff%=(365.25*24*3600*1000);
 
-const meses = Math.floor(diff/(30.44*24*3600*1000));
-diff %= (30.44*24*3600*1000);
+const meses=Math.floor(diff/(30.44*24*3600*1000));
+diff%=(30.44*24*3600*1000);
 
-const dias = Math.floor(diff/(24*3600*1000));
-diff %= (24*3600*1000);
+const dias=Math.floor(diff/(24*3600*1000));
+diff%=(24*3600*1000);
 
-const horas = Math.floor(diff/(3600*1000));
-diff %= (3600*1000);
+const horas=Math.floor(diff/(3600*1000));
+diff%=(3600*1000);
 
-const minutos = Math.floor(diff/(60*1000));
-diff %= (60*1000);
+const minutos=Math.floor(diff/(60*1000));
+diff%=(60*1000);
 
-const segundos = Math.floor(diff/1000);
+const segundos=Math.floor(diff/1000);
 
-document.getElementById("tempo").innerHTML =
+document.getElementById("tempo").innerHTML=
 `${anos} anos, ${meses} meses, ${dias} dias<br>
 ${horas}h ${minutos}m ${segundos}s`;
 }
@@ -225,23 +241,15 @@ setTimeout(()=>el.remove(),15000);
 }
 setInterval(criarFloat,1200);
 
-/* 📸 FOTOS */
-const fotos=[
-"foto1.jpeg","foto2.jpeg","foto3.jpeg",
-"foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"
-];
+/* FOTOS */
+const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"];
 
 function criarFoto(){
 const div=document.createElement("div");
 div.className="foto-float";
 
-/* evita centro */
-const lado = Math.random()<0.5 ? Math.random()*20 : 80+Math.random()*20;
+const lado=Math.random()<0.5 ? Math.random()*20 : 80+Math.random()*20;
 div.style.left=lado+"vw";
-
-/* rotação natural */
-const rot = (Math.random()*10 - 5)+"deg";
-div.style.setProperty('--rot', rot);
 
 div.style.animationDuration=(14+Math.random()*6)+"s";
 
@@ -250,7 +258,6 @@ div.innerHTML=`<img src="${fotos[Math.floor(Math.random()*fotos.length)]}">`;
 document.body.appendChild(div);
 setTimeout(()=>div.remove(),20000);
 }
-
 setInterval(criarFoto,6000);
 
 /* FRASES */
@@ -271,13 +278,18 @@ f.style.left=Math.random()*80+"vw";
 document.body.appendChild(f);
 setTimeout(()=>f.remove(),15000);
 }
-
 setInterval(criarFrase,6000);
 
-/* MÚSICA */
+/* 🎵 MÚSICA CORRIGIDA */
 const musica=document.getElementById("musica");
 musica.volume=0.3;
-musica.play().catch(()=>{});
+
+/* tenta autoplay */
+musica.play().catch(()=>{
+document.body.addEventListener("click",()=>{
+musica.play();
+},{once:true});
+});
 
 </script>
 
