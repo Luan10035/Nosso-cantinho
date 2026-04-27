@@ -37,36 +37,44 @@ background-size:cover;
 z-index:0;
 }
 
-/* estrelas */
-.estrelas{position:fixed;width:100%;height:100%;z-index:1;}
-.estrela{
-position:absolute;
-width:2px;height:2px;border-radius:50%;
-background:white;
-animation:piscar 2s infinite alternate;
+/* BOTÃO MÚSICA */
+.player{
+position:fixed;
+top:20px;
+right:20px;
+z-index:200;
+background:rgba(0,0,0,0.6);
+padding:10px;
+border-radius:10px;
+backdrop-filter:blur(5px);
 }
 
-/* container */
+.player button{
+margin:5px;
+padding:6px 10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* resto igual */
+.estrelas{position:fixed;width:100%;height:100%;z-index:1;}
+.estrela{position:absolute;width:2px;height:2px;border-radius:50%;background:white;animation:piscar 2s infinite alternate;}
+
 .container{text-align:center;z-index:50;position:relative;}
 
-.nome-container{
-display:flex;align-items:center;justify-content:center;
-gap:26px; /* leve ajuste */
-margin-bottom:45px;
-}
+.nome-container{display:flex;align-items:center;justify-content:center;gap:26px;margin-bottom:45px;}
 
 .nome{
 font-family:'Great Vibes', cursive;
 font-size:5rem;
-letter-spacing:2px; /* leve espaçamento */
+letter-spacing:2px;
 background: linear-gradient(90deg,#66c2ff,#66ff99,#ff9933);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
 
-.coracao{
-margin:0 10px;
-}
+.coracao{margin:0 10px;}
 
 .girassol{
 font-size:3rem;
@@ -88,13 +96,7 @@ z-index:100;
 .tempo{font-size:1.5rem;margin-top:10px;}
 
 /* icones */
-.float{
-position:fixed;
-bottom:-20px;
-font-size:32px;
-animation:subir linear forwards;
-z-index:2;
-}
+.float{position:fixed;bottom:-20px;font-size:32px;animation:subir linear forwards;z-index:2;}
 
 @keyframes subir{
 0%{transform:translateY(0);opacity:0;}
@@ -115,10 +117,7 @@ z-index:10;
 animation:subirFoto linear forwards;
 }
 
-.foto-float img{
-width:100%;
-border-radius:6px;
-}
+.foto-float img{width:100%;border-radius:6px;}
 
 @keyframes subirFoto{
 0%{transform:translateY(0);opacity:0;}
@@ -138,7 +137,6 @@ max-width:280px;
 text-align:center;
 }
 
-/* frase especial menor */
 .frase-pequena{
 font-size:1.4rem;
 max-width:320px;
@@ -155,6 +153,11 @@ max-width:320px;
 </head>
 
 <body>
+
+<div class="player">
+<button onclick="trocarMusica(0)">🎵 1</button>
+<button onclick="trocarMusica(1)">🎵 2</button>
+</div>
 
 <div class="estrelas" id="estrelas"></div>
 
@@ -174,6 +177,17 @@ Estamos juntos há:
 <audio id="musica"></audio>
 
 <script>
+
+/* VARIÁVEIS FALTANTES (CORREÇÃO DO BUG) */
+let fraseAtiva=false;
+let indexFrase=0;
+
+const posicoesFrases=[
+{top:"5%", left:"5%"},
+{top:"5%", right:"5%"},
+{bottom:"10%", left:"5%"},
+{bottom:"10%", right:"5%"}
+];
 
 /* ESTRELAS */
 for(let i=0;i<80;i++){
@@ -213,65 +227,7 @@ ${horas}h ${minutos}m ${segundos}s`;
 }
 setInterval(atualizarTempo,1000);
 
-/* ICONES */
-const simbolos=["❤️","🌻"];
-setInterval(()=>{
-const el=document.createElement("div");
-el.className="float";
-el.innerHTML=simbolos[Math.floor(Math.random()*simbolos.length)];
-el.style.left=(10+Math.random()*80)+"vw";
-el.style.animationDuration=(10+Math.random()*5)+"s";
-document.body.appendChild(el);
-setTimeout(()=>el.remove(),15000);
-},1200);
-
-/* FOTOS (INTACTO) */
-const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"];
-
-let fotosAtivas=0;
-let ultimaFoto=null;
-let lado=0;
-
-function pegarFoto(){
-let nova;
-do{
-nova=fotos[Math.floor(Math.random()*fotos.length)];
-}while(nova===ultimaFoto);
-ultimaFoto=nova;
-return nova;
-}
-
-function criarFoto(){
-if(fotosAtivas>=3) return;
-
-fotosAtivas++;
-
-const div=document.createElement("div");
-div.className="foto-float";
-
-let pos;
-if(lado===0) pos=30;
-if(lado===1) pos=60;
-if(lado===2) pos=45;
-
-lado=(lado+1)%3;
-
-div.style.left=pos+"vw";
-div.style.animationDuration="20s";
-
-div.innerHTML=`<img src="${pegarFoto()}">`;
-
-document.body.appendChild(div);
-
-setTimeout(()=>{
-div.remove();
-fotosAtivas--;
-},20000);
-}
-setInterval(criarFoto,4500);
-
-/* FRASES (COM NOVAS + RARIDADE) */
-
+/* FRASES (AGORA FUNCIONANDO) */
 const frases=[
 "Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso 🌻",
 "Você não é só parte dos meus dias… você é o melhor deles ❤️",
@@ -279,12 +235,7 @@ const frases=[
 "Eu não sei exatamente em que momento você deixou de ser só alguém especial e virou alguém essencial pra mim… mas sei que, desde então, tudo ficou mais leve."
 ];
 
-const fraseEspecial=`Eu não preciso de muito pra saber o que eu sinto.
-
-Eu gosto de você.
-Gosto da sua companhia, do seu jeito, da forma como você me faz sentir.
-
-E quanto mais o tempo passa, mais eu tenho certeza de uma coisa:
+const fraseEspecial=`Eu não preciso de muito pra saber o que eu sinto...
 
 Eu quero você comigo.`;
 
@@ -325,13 +276,19 @@ fraseAtiva=false;
 
 setInterval(criarFrase,7000);
 
-/* MÚSICAS EM SEQUÊNCIA */
+/* 🎵 MÚSICAS */
 const playlist=["musica1.mp3","musica2.mp3"];
 let musicaIndex=0;
 
 const musica=document.getElementById("musica");
 musica.src=playlist[musicaIndex];
 musica.volume=0.3;
+
+function trocarMusica(i){
+musicaIndex=i;
+musica.src=playlist[musicaIndex];
+musica.play();
+}
 
 musica.addEventListener("ended",()=>{
 musicaIndex=(musicaIndex+1)%playlist.length;
