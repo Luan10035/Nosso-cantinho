@@ -37,7 +37,7 @@ background-size:cover;
 z-index:0;
 }
 
-/* 🎵 PLAYER ESTILO SPOTIFY (SUBSTITUI O ANTIGO) */
+/* 🎵 PLAYER (APENAS ALTERADO) */
 .player{
 position:fixed;
 top:20px;
@@ -48,33 +48,37 @@ background:#111;
 border-radius:18px;
 padding:12px;
 box-shadow:0 10px 30px rgba(0,0,0,0.6);
+text-align:center;
 }
 
-.player img{
-width:100%;
-border-radius:12px;
-margin-bottom:10px;
-}
-
-.player .titulo{
-font-size:14px;
-font-weight:bold;
-}
-
-.player .artista{
-font-size:12px;
-opacity:0.7;
-margin-bottom:10px;
-}
-
-.player .controls{
+/* FOTO CORAÇÃO */
+.foto-musica{
+position:relative;
 display:flex;
 justify-content:center;
-align-items:center;
-gap:10px;
+margin-bottom:10px;
 }
 
-.player button{
+.foto-musica img{
+width:170px;
+height:170px;
+object-fit:cover;
+clip-path: path("M85 150 L20 80 A35 35 0 1 1 85 40 A35 35 0 1 1 150 80 Z");
+}
+
+/* CONTROLES SOBREPOSTOS */
+.player .controls{
+position:absolute;
+bottom:75px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+/* BOTÕES */
+.player .controls button{
 background:white;
 border:none;
 border-radius:50%;
@@ -84,7 +88,25 @@ cursor:pointer;
 font-size:16px;
 }
 
-/* ===== RESTANTE INTACTO ===== */
+/* PLAY MAIOR */
+.player .controls .play{
+width:55px;
+height:55px;
+font-size:20px;
+}
+
+.player .titulo{
+font-size:14px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.player .artista{
+font-size:12px;
+opacity:0.7;
+}
+
+/* ===== RESTANTE TOTALMENTE INTACTO ===== */
 .estrelas{position:fixed;width:100%;height:100%;z-index:1;}
 .estrela{position:absolute;width:2px;height:2px;border-radius:50%;background:white;animation:piscar 2s infinite alternate;}
 
@@ -178,17 +200,22 @@ max-width:320px;
 
 <body>
 
-<!-- 🎵 NOVO PLAYER -->
+<!-- 🎵 PLAYER -->
 <div class="player">
-<img src="capa.jpg">
-<div class="titulo">Luan e Gi</div>
-<div class="artista">Nossa música ❤️</div>
+
+<div class="foto-musica">
+<img src="fotomusica1.png">
+</div>
 
 <div class="controls">
 <button onclick="trocarMusica(-1)">⏮</button>
-<button onclick="playPause()">▶</button>
+<button class="play" onclick="playPause()">▶</button>
 <button onclick="trocarMusica(1)">⏭</button>
 </div>
+
+<div class="titulo">Lu e Gi</div>
+<div class="artista">Juntos para sempre</div>
+
 </div>
 
 <div class="estrelas" id="estrelas"></div>
@@ -210,7 +237,7 @@ Estamos juntos há:
 
 <script>
 
-/* ===== SEU SCRIPT ORIGINAL (INTACTO) ===== */
+/* ===== SEU SCRIPT ORIGINAL INTACTO ===== */
 
 let fraseAtiva=false;
 let indexFrase=0;
@@ -222,7 +249,6 @@ const posicoesFrases=[
 {bottom:"10%", right:"5%"}
 ];
 
-/* ESTRELAS */
 for(let i=0;i<80;i++){
 const e=document.createElement("div");
 e.className="estrela";
@@ -231,7 +257,6 @@ e.style.left=Math.random()*100+"%";
 document.getElementById("estrelas").appendChild(e);
 }
 
-/* CONTADOR */
 const dataInicio=new Date("2026-03-02");
 function atualizarTempo(){
 const agora=new Date();
@@ -260,7 +285,7 @@ ${horas}h ${minutos}m ${segundos}s`;
 }
 setInterval(atualizarTempo,1000);
 
-/* FRASES (INTACTO) */
+/* FRASES */
 const frases=[
 "Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso 🌻",
 "Você não é só parte dos meus dias… você é o melhor deles ❤️",
@@ -309,7 +334,7 @@ fraseAtiva=false;
 
 setInterval(criarFrase,7000);
 
-/* 🎵 MÚSICAS (ADAPTADO PARA PLAYER) */
+/* MÚSICA */
 const playlist=["musica1.mp3","musica2.mp3"];
 let musicaIndex=0;
 let tocando=false;
