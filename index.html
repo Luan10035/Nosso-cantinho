@@ -37,7 +37,7 @@ background-size:cover;
 z-index:0;
 }
 
-/* 🎵 PLAYER (INTACTO) */
+/* 🎵 PLAYER */
 .player{
 position:fixed;
 top:20px;
@@ -114,7 +114,6 @@ background:white;
 animation:piscar infinite alternate;
 }
 
-/* animação corrigida */
 @keyframes piscar{
 0%{opacity:0.2;}
 100%{opacity:1;}
@@ -136,7 +135,7 @@ pointer-events:none;
 100%{transform:translateY(-130vh);opacity:0;}
 }
 
-/* RESTO INTACTO */
+/* RESTO */
 .container{text-align:center;z-index:50;position:relative;}
 
 .nome-container{display:flex;align-items:center;justify-content:center;gap:26px;margin-bottom:45px;}
@@ -220,7 +219,7 @@ max-width:320px;
 
 <div class="player">
 <div class="foto-musica">
-<img src="fotomusica1.jpg">
+<img src="fotomusica1.png">
 </div>
 
 <div class="controls">
@@ -252,7 +251,7 @@ Estamos juntos há:
 
 <script>
 
-/* ⭐ ESTRELAS DINÂMICAS */
+/* ESTRELAS DINÂMICAS */
 function gerarEstrelas(){
 const container=document.getElementById("estrelas");
 container.innerHTML="";
@@ -260,38 +259,30 @@ container.innerHTML="";
 for(let i=0;i<80;i++){
 const e=document.createElement("div");
 e.className="estrela";
-
 e.style.top=Math.random()*100+"%";
 e.style.left=Math.random()*100+"%";
-
 const size=Math.random()*2+1;
 e.style.width=size+"px";
 e.style.height=size+"px";
-
 e.style.animationDuration=(1.5 + Math.random()*2)+"s";
-
 container.appendChild(e);
 }
 }
-
 gerarEstrelas();
 setInterval(gerarEstrelas,15000);
 
-/* ❤️🌻 FLOAT */
+/* FLOAT */
 const simbolos=["❤️","🌻"];
 
 function criarFloat(){
 const el=document.createElement("div");
 el.className="float";
-
 el.innerHTML=simbolos[Math.floor(Math.random()*simbolos.length)];
 el.style.left=(10 + Math.random()*80)+"vw";
 el.style.animationDuration=(10 + Math.random()*5)+"s";
-
 document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 }
-
 setInterval(criarFloat,1200);
 
 /* CONTADOR */
@@ -322,7 +313,6 @@ document.getElementById("tempo").innerHTML=
 `${anos} anos, ${meses} meses, ${dias} dias<br>
 ${horas}h ${minutos}m ${segundos}s`;
 }
-
 setInterval(atualizarTempo,1000);
 
 /* FRASES */
@@ -350,7 +340,6 @@ Eu quero você comigo.`;
 let contadorFrase=0;
 
 function criarFrase(){
-
 if(fraseAtiva) return;
 
 fraseAtiva=true;
@@ -381,7 +370,6 @@ f.remove();
 fraseAtiva=false;
 },15000);
 }
-
 setInterval(criarFrase,7000);
 
 /* MÚSICA */
