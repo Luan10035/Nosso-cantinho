@@ -37,27 +37,54 @@ background-size:cover;
 z-index:0;
 }
 
-/* BOTÃO MÚSICA */
+/* 🎵 PLAYER ESTILO SPOTIFY */
 .player{
 position:fixed;
 top:20px;
 right:20px;
 z-index:200;
-background:rgba(0,0,0,0.6);
-padding:10px;
-border-radius:10px;
-backdrop-filter:blur(5px);
+width:220px;
+background:#111;
+border-radius:18px;
+padding:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+
+.player img{
+width:100%;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+.player .titulo{
+font-size:14px;
+font-weight:bold;
+}
+
+.player .artista{
+font-size:12px;
+opacity:0.7;
+margin-bottom:10px;
+}
+
+.player .controls{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
 }
 
 .player button{
-margin:5px;
-padding:6px 10px;
+background:white;
 border:none;
-border-radius:6px;
+border-radius:50%;
+width:40px;
+height:40px;
 cursor:pointer;
+font-size:16px;
 }
 
-/* resto igual */
+/* RESTO DO SITE (INTACTO) */
 .estrelas{position:fixed;width:100%;height:100%;z-index:1;}
 .estrela{position:absolute;width:2px;height:2px;border-radius:50%;background:white;animation:piscar 2s infinite alternate;}
 
@@ -95,7 +122,6 @@ z-index:100;
 
 .tempo{font-size:1.5rem;margin-top:10px;}
 
-/* icones */
 .float{position:fixed;bottom:-20px;font-size:32px;animation:subir linear forwards;z-index:2;}
 
 @keyframes subir{
@@ -154,9 +180,17 @@ max-width:320px;
 
 <body>
 
+<!-- PLAYER NOVO -->
 <div class="player">
-<button onclick="trocarMusica(0)">🎵 1</button>
-<button onclick="trocarMusica(1)">🎵 2</button>
+<img src="capa.jpg">
+<div class="titulo">Luan e Gi</div>
+<div class="artista">Nossa música ❤️</div>
+
+<div class="controls">
+<button onclick="trocarMusica(-1)">⏮</button>
+<button onclick="playPause()">▶</button>
+<button onclick="trocarMusica(1)">⏭</button>
+</div>
 </div>
 
 <div class="estrelas" id="estrelas"></div>
@@ -178,126 +212,38 @@ Estamos juntos há:
 
 <script>
 
-/* VARIÁVEIS FALTANTES (CORREÇÃO DO BUG) */
-let fraseAtiva=false;
-let indexFrase=0;
-
-const posicoesFrases=[
-{top:"5%", left:"5%"},
-{top:"5%", right:"5%"},
-{bottom:"10%", left:"5%"},
-{bottom:"10%", right:"5%"}
-];
-
-/* ESTRELAS */
-for(let i=0;i<80;i++){
-const e=document.createElement("div");
-e.className="estrela";
-e.style.top=Math.random()*100+"%";
-e.style.left=Math.random()*100+"%";
-document.getElementById("estrelas").appendChild(e);
-}
-
-/* CONTADOR */
-const dataInicio=new Date("2026-03-02");
-function atualizarTempo(){
-const agora=new Date();
-let diff=agora-dataInicio;
-
-const anos=Math.floor(diff/(365.25*24*3600*1000));
-diff%=(365.25*24*3600*1000);
-
-const meses=Math.floor(diff/(30.44*24*3600*1000));
-diff%=(30.44*24*3600*1000);
-
-const dias=Math.floor(diff/(24*3600*1000));
-diff%=(24*3600*1000);
-
-const horas=Math.floor(diff/(3600*1000));
-diff%=(3600*1000);
-
-const minutos=Math.floor(diff/(60*1000));
-diff%=(60*1000);
-
-const segundos=Math.floor(diff/1000);
-
-document.getElementById("tempo").innerHTML=
-`${anos} anos, ${meses} meses, ${dias} dias<br>
-${horas}h ${minutos}m ${segundos}s`;
-}
-setInterval(atualizarTempo,1000);
-
-/* FRASES (AGORA FUNCIONANDO) */
-const frases=[
-"Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso 🌻",
-"Você não é só parte dos meus dias… você é o melhor deles ❤️",
-"O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você 💫",
-"Eu não sei exatamente em que momento você deixou de ser só alguém especial e virou alguém essencial pra mim… mas sei que, desde então, tudo ficou mais leve."
-];
-
-const fraseEspecial=`Eu não preciso de muito pra saber o que eu sinto...
-
-Eu quero você comigo.`;
-
-let contadorFrase=0;
-
-function criarFrase(){
-
-if(fraseAtiva) return;
-
-fraseAtiva=true;
-
-const f=document.createElement("div");
-
-if(contadorFrase % 5 === 0){
-f.className="frase frase-pequena";
-f.innerText=fraseEspecial;
-}else{
-f.className="frase";
-f.innerText=frases[Math.floor(Math.random()*frases.length)];
-}
-
-contadorFrase++;
-
-const pos=posicoesFrases[indexFrase];
-indexFrase=(indexFrase+1)%posicoesFrases.length;
-
-for(let key in pos){
-f.style[key]=pos[key];
-}
-
-document.body.appendChild(f);
-
-setTimeout(()=>{
-f.remove();
-fraseAtiva=false;
-},15000);
-}
-
-setInterval(criarFrase,7000);
-
-/* 🎵 MÚSICAS */
+/* PLAYER */
 const playlist=["musica1.mp3","musica2.mp3"];
 let musicaIndex=0;
+let tocando=false;
 
 const musica=document.getElementById("musica");
-musica.src=playlist[musicaIndex];
-musica.volume=0.3;
 
-function trocarMusica(i){
-musicaIndex=i;
-musica.src=playlist[musicaIndex];
+function playPause(){
+if(tocando){
+musica.pause();
+tocando=false;
+}else{
 musica.play();
+tocando=true;
+}
 }
 
-musica.addEventListener("ended",()=>{
-musicaIndex=(musicaIndex+1)%playlist.length;
+function trocarMusica(dir){
+musicaIndex=(musicaIndex+dir+playlist.length)%playlist.length;
 musica.src=playlist[musicaIndex];
 musica.play();
-});
+tocando=true;
+}
 
-musica.play().catch(()=>{
-document.body.addEventListener("click",()=>musica.play(),{once:true});
+musica.src=playlist[0];
+musica.volume=0.3;
+
+musica.play().then(()=>tocando=true).catch(()=>{
+document.body.addEventListener("click",()=>{
+musica.play();
+tocando=true;
+},{once:true});
 });
 
 </script>
