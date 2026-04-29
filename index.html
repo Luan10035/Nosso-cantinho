@@ -151,7 +151,7 @@ animation:subirFoto linear forwards;
 
 /* TEXTO */
 .container{text-align:center;z-index:50;position:relative;}
-.nome-container{display:flex;align-items:center;justify-content:center;gap:26px;margin-bottom:45px;}
+.nome-container{display:flex;align-items:center;justify-content:center;gap:26px;margin-bottom:25px;}
 
 .nome{
 font-family:'Great Vibes', cursive;
@@ -168,6 +168,16 @@ animation:pulse 2s infinite alternate;
 }
 @keyframes pulse{from{transform:scale(1);}to{transform:scale(1.2);}}
 
+/* FRASES */
+.frase{
+font-size:1.4rem;
+margin-bottom:25px;
+opacity:0;
+transition:opacity 1s;
+min-height:40px;
+}
+
+/* CONTADOR */
 .contador{
 background: rgba(10,10,10,0.15);
 backdrop-filter: blur(2px);
@@ -175,7 +185,7 @@ padding:25px;border-radius:15px;
 border:1px solid rgba(255,255,255,0.25);
 }
 
-.tempo{font-size:1.4rem;margin-top:10px;line-height:1.6;}
+.tempo{font-size:1.3rem;margin-top:10px;line-height:1.6;}
 </style>
 </head>
 
@@ -205,6 +215,8 @@ border:1px solid rgba(255,255,255,0.25);
 <span class="girassol">🌻</span>
 </div>
 
+<div class="frase" id="frase"></div>
+
 <div class="contador">
 Estamos juntos há:
 <div class="tempo" id="tempo"></div>
@@ -214,6 +226,32 @@ Estamos juntos há:
 <audio id="musica"></audio>
 
 <script>
+
+/* FRASES */
+const frases=[
+"Você é o meu lugar favorito no mundo ❤️",
+"Com você, todos os dias são especiais 🌻",
+"Nosso amor é minha melhor escolha 💛",
+"Você é o meu sonho realizado ✨",
+"Te amar é a melhor parte da minha vida 💕",
+"Cada momento contigo é único 💫"
+];
+
+let fraseIndex=0;
+const fraseEl=document.getElementById("frase");
+
+function trocarFrase(){
+fraseEl.style.opacity=0;
+
+setTimeout(()=>{
+fraseEl.innerHTML=frases[fraseIndex];
+fraseEl.style.opacity=1;
+fraseIndex=(fraseIndex+1)%frases.length;
+},500);
+}
+
+setInterval(trocarFrase,4000);
+trocarFrase();
 
 /* ESTRELAS */
 function gerarEstrelas(){
@@ -240,7 +278,7 @@ document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 },800);
 
-/* FOTOS (AGORA CORRETO .jpeg) */
+/* FOTOS */
 const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg"];
 
 setInterval(()=>{
@@ -251,7 +289,6 @@ f.style.animationDuration=(10 + Math.random()*6)+"s";
 
 const img=document.createElement("img");
 img.src=fotos[Math.floor(Math.random()*fotos.length)];
-
 img.onerror=()=>f.remove();
 
 f.appendChild(img);
@@ -260,7 +297,7 @@ document.body.appendChild(f);
 setTimeout(()=>f.remove(),18000);
 },4000);
 
-/* CRONÔMETRO COMPLETO */
+/* CRONÔMETRO */
 const dataInicio=new Date("2026-03-02T00:00:00");
 
 function atualizarTempo(){
