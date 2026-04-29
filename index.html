@@ -43,11 +43,11 @@ position:fixed;
 top:20px;
 right:20px;
 z-index:200;
-width:280px;
+width:260px;
 background:#111;
-border-radius:20px;
+border-radius:18px;
 padding:15px;
-box-shadow:0 10px 40px rgba(0,0,0,0.9);
+box-shadow:0 15px 40px rgba(0,0,0,0.9);
 }
 
 .player-img{
@@ -58,16 +58,10 @@ border-radius:12px;
 margin-bottom:10px;
 }
 
-.player-info{
-font-size:14px;
-margin-bottom:10px;
-}
-
 .player-controls{
 display:flex;
 justify-content:center;
-align-items:center;
-gap:15px;
+gap:12px;
 margin:10px 0;
 }
 
@@ -75,25 +69,17 @@ margin:10px 0;
 background:white;
 border:none;
 border-radius:50%;
-width:40px;
-height:40px;
+width:45px;
+height:45px;
 cursor:pointer;
 }
 
 .play{
-width:55px;
-height:55px;
-font-size:18px;
+width:60px;
+height:60px;
 }
 
-.player-extra{
-display:flex;
-justify-content:space-between;
-font-size:12px;
-opacity:0.7;
-}
-
-/* ESTRELAS */
+/* ESTRELAS NOVAS */
 .estrelas{position:fixed;width:100%;height:100%;z-index:1;}
 
 .estrela{
@@ -102,8 +88,8 @@ width:3px;
 height:3px;
 border-radius:50%;
 background:gold;
-box-shadow:0 0 10px gold,0 0 20px gold;
-animation:estrelaAnim linear forwards;
+box-shadow:0 0 10px gold,0 0 25px gold;
+animation:estrelaAnim 10s linear forwards;
 }
 
 @keyframes estrelaAnim{
@@ -118,7 +104,6 @@ animation:estrelaAnim linear forwards;
 position:fixed;
 font-family:'Great Vibes', cursive;
 font-size:2rem;
-color:white;
 opacity:0;
 animation:fadeFrase 10s forwards;
 z-index:100;
@@ -133,7 +118,46 @@ text-shadow:0 0 10px rgba(255,255,255,0.8);
 100%{opacity:0;}
 }
 
-/* RESTANTE */
+/* FLOAT ORIGINAL MANTIDO */
+.float{
+position:fixed;
+bottom:-50px;
+font-size:28px;
+animation:subir linear forwards;
+z-index:2;
+pointer-events:none;
+opacity:0.9;
+}
+
+@keyframes subir{
+0%{transform:translateY(0) scale(0.8);opacity:0;}
+10%{opacity:1;}
+50%{transform:translateY(-50vh) scale(1.1);}
+100%{transform:translateY(-120vh) scale(0.9);opacity:0;}
+}
+
+/* FOTOS MANTIDAS */
+.foto-float{
+position:fixed;
+bottom:-200px;
+width:180px;
+background:white;
+padding:8px;
+border-radius:10px;
+box-shadow:0 25px 50px rgba(0,0,0,0.9);
+z-index:5;
+animation:subirFoto linear forwards;
+}
+
+.foto-float img{width:100%;border-radius:6px;}
+
+@keyframes subirFoto{
+0%{transform:translateY(0) scale(0.9);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-150vh) scale(1);opacity:0;}
+}
+
+/* TEXTO ORIGINAL */
 .container{text-align:center;z-index:50;position:relative;}
 
 .nome{
@@ -156,24 +180,13 @@ border:1px solid rgba(255,255,255,0.25);
 
 <body>
 
-<!-- PLAYER -->
 <div class="player">
 <div class="player-img"></div>
-
-<div class="player-info">
-<strong>Lu e Gi</strong><br>
-Juntos para sempre
-</div>
 
 <div class="player-controls">
 <button onclick="trocarMusica(-1)">⏮</button>
 <button class="play" onclick="playPause()">▶</button>
 <button onclick="trocarMusica(1)">⏭</button>
-</div>
-
-<div class="player-extra">
-<span>❤️ 🔁</span>
-<span>▂▃▅▇▅▃▂</span>
 </div>
 </div>
 
@@ -192,13 +205,12 @@ Estamos juntos há:
 
 <script>
 
-/* FRASES RANDOM */
+/* FRASES */
 const frases=[
-"Você é o meu lugar favorito ❤️",
-"Te amar é minha melhor escolha 🌻",
-"Nosso amor é único 💫",
-"Com você tudo faz sentido 💛",
-"Meu mundo é você ✨"
+"Você é meu destino ❤️",
+"Nosso amor é eterno 🌻",
+"Eu escolheria você mil vezes 💛",
+"Você é meu lar ✨"
 ];
 
 setInterval(()=>{
@@ -211,19 +223,48 @@ f.style.left=Math.random()*80+"vw";
 
 document.body.appendChild(f);
 setTimeout(()=>f.remove(),10000);
-
 },3000);
 
-/* ESTRELAS DINÂMICAS */
+/* ESTRELAS */
 setInterval(()=>{
 const e=document.createElement("div");
 e.className="estrela";
 e.style.top=Math.random()*100+"%";
 e.style.left=Math.random()*100+"%";
-e.style.animationDuration="10s";
 document.getElementById("estrelas").appendChild(e);
 setTimeout(()=>e.remove(),10000);
 },200);
+
+/* FLOAT ORIGINAL */
+const simbolos=["❤️","🌻"];
+setInterval(()=>{
+const el=document.createElement("div");
+el.className="float";
+el.innerHTML=simbolos[Math.floor(Math.random()*2)];
+el.style.left=Math.random()*100+"vw";
+el.style.animationDuration=(8 + Math.random()*6)+"s";
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),15000);
+},800);
+
+/* FOTOS */
+const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg"];
+
+setInterval(()=>{
+const f=document.createElement("div");
+f.className="foto-float";
+f.style.left=(10 + Math.random()*70)+"vw";
+f.style.animationDuration=(10 + Math.random()*6)+"s";
+
+const img=document.createElement("img");
+img.src=fotos[Math.floor(Math.random()*fotos.length)];
+img.onerror=()=>f.remove();
+
+f.appendChild(img);
+document.body.appendChild(f);
+
+setTimeout(()=>f.remove(),18000);
+},4000);
 
 /* CRONÔMETRO */
 const dataInicio=new Date("2026-03-02T00:00:00");
