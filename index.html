@@ -37,7 +37,7 @@ background-size:cover;
 z-index:0;
 }
 
-/* PLAYER NOVO */
+/* PLAYER */
 .player{
 position:fixed;
 top:20px;
@@ -56,6 +56,20 @@ height:140px;
 background:#333;
 border-radius:12px;
 margin-bottom:10px;
+background-image:url("foto6.jpeg");
+background-size:cover;
+background-position:center;
+}
+
+.player-title{
+font-size:14px;
+font-weight:bold;
+}
+
+.player-sub{
+font-size:12px;
+opacity:0.7;
+margin-bottom:8px;
 }
 
 .player-controls{
@@ -79,7 +93,7 @@ width:60px;
 height:60px;
 }
 
-/* ESTRELAS NOVAS */
+/* ESTRELAS */
 .estrelas{position:fixed;width:100%;height:100%;z-index:1;}
 
 .estrela{
@@ -118,7 +132,7 @@ text-shadow:0 0 10px rgba(255,255,255,0.8);
 100%{opacity:0;}
 }
 
-/* FLOAT ORIGINAL MANTIDO */
+/* FLOAT */
 .float{
 position:fixed;
 bottom:-50px;
@@ -136,7 +150,7 @@ opacity:0.9;
 100%{transform:translateY(-120vh) scale(0.9);opacity:0;}
 }
 
-/* FOTOS MANTIDAS */
+/* FOTOS */
 .foto-float{
 position:fixed;
 bottom:-200px;
@@ -157,7 +171,7 @@ animation:subirFoto linear forwards;
 100%{transform:translateY(-150vh) scale(1);opacity:0;}
 }
 
-/* TEXTO ORIGINAL */
+/* TEXTO */
 .container{text-align:center;z-index:50;position:relative;}
 
 .nome{
@@ -182,6 +196,8 @@ border:1px solid rgba(255,255,255,0.25);
 
 <div class="player">
 <div class="player-img"></div>
+<div class="player-title">Luan & Gi</div>
+<div class="player-sub">Nossas músicas</div>
 
 <div class="player-controls">
 <button onclick="trocarMusica(-1)">⏮</button>
@@ -218,8 +234,9 @@ const f=document.createElement("div");
 f.className="frase-float";
 f.innerHTML=frases[Math.floor(Math.random()*frases.length)];
 
-f.style.top=Math.random()*80+"vh";
-f.style.left=Math.random()*80+"vw";
+let lado = Math.random() < 0.5 ? "left" : "right";
+f.style[lado] = "5%";
+f.style.top = (5 + Math.random()*50) + "vh";
 
 document.body.appendChild(f);
 setTimeout(()=>f.remove(),10000);
@@ -235,7 +252,7 @@ document.getElementById("estrelas").appendChild(e);
 setTimeout(()=>e.remove(),10000);
 },200);
 
-/* FLOAT ORIGINAL */
+/* FLOAT */
 const simbolos=["❤️","🌻"];
 setInterval(()=>{
 const el=document.createElement("div");
@@ -247,17 +264,26 @@ document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 },800);
 
-/* FOTOS */
-const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg"];
+/* FOTOS SEM REPETIÇÃO */
+let fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"];
+let fila=[];
+
+function embaralhar(){
+fila=[...fotos].sort(()=>Math.random()-0.5);
+}
+
+embaralhar();
 
 setInterval(()=>{
+if(fila.length===0) embaralhar();
+
 const f=document.createElement("div");
 f.className="foto-float";
 f.style.left=(10 + Math.random()*70)+"vw";
 f.style.animationDuration=(10 + Math.random()*6)+"s";
 
 const img=document.createElement("img");
-img.src=fotos[Math.floor(Math.random()*fotos.length)];
+img.src=fila.pop();
 img.onerror=()=>f.remove();
 
 f.appendChild(img);
