@@ -37,7 +37,7 @@ background-size:cover;
 z-index:0;
 }
 
-/* 🎵 PLAYER MELHORADO */
+/* PLAYER */
 .player{
 position:fixed;
 top:20px;
@@ -67,7 +67,6 @@ border-radius:50%;
 box-shadow:0 0 20px rgba(255,200,0,0.4);
 }
 
-/* BOTÕES EM CIMA DA FOTO */
 .controls{
 position:absolute;
 bottom:20px;
@@ -94,21 +93,11 @@ height:60px;
 font-size:22px;
 }
 
-/* TEXTO */
-.titulo{
-font-size:16px;
-font-weight:bold;
-margin-top:10px;
-}
+.titulo{font-size:16px;font-weight:bold;margin-top:10px;}
+.artista{font-size:13px;opacity:0.7;}
 
-.artista{
-font-size:13px;
-opacity:0.7;
-}
-
-/* ⭐ ESTRELAS */
+/* ESTRELAS */
 .estrelas{position:fixed;width:100%;height:100%;z-index:1;}
-
 .estrela{
 position:absolute;
 width:2px;
@@ -117,13 +106,12 @@ border-radius:50%;
 background:white;
 animation:piscar infinite alternate;
 }
-
 @keyframes piscar{
 0%{opacity:0.2;}
 100%{opacity:1;}
 }
 
-/* ❤️🌻 FLOAT MELHORADO */
+/* FLOAT */
 .float{
 position:fixed;
 bottom:-50px;
@@ -133,7 +121,6 @@ z-index:2;
 pointer-events:none;
 opacity:0.9;
 }
-
 @keyframes subir{
 0%{transform:translateY(0) scale(0.8);opacity:0;}
 10%{opacity:1;}
@@ -141,7 +128,7 @@ opacity:0.9;
 100%{transform:translateY(-120vh) scale(0.9);opacity:0;}
 }
 
-/* 🖼️ FOTO SUBINDO */
+/* FOTO FLOAT */
 .foto-float{
 position:fixed;
 bottom:-200px;
@@ -159,12 +146,11 @@ animation:subirFoto linear forwards;
 @keyframes subirFoto{
 0%{transform:translateY(0) scale(0.9);opacity:0;}
 10%{opacity:1;}
-100%{transform:translateY(-150vh) scale(1);opacity:1;}
+100%{transform:translateY(-150vh) scale(1);opacity:0;}
 }
 
-/* RESTO */
+/* TEXTO */
 .container{text-align:center;z-index:50;position:relative;}
-
 .nome-container{display:flex;align-items:center;justify-content:center;gap:26px;margin-bottom:45px;}
 
 .nome{
@@ -180,7 +166,6 @@ background: linear-gradient(90deg,#66c2ff,#66ff99,#ff9933);
 font-size:3rem;
 animation:pulse 2s infinite alternate;
 }
-
 @keyframes pulse{from{transform:scale(1);}to{transform:scale(1.2);}}
 
 .contador{
@@ -190,16 +175,15 @@ padding:25px;border-radius:15px;
 border:1px solid rgba(255,255,255,0.25);
 }
 
-.tempo{font-size:1.5rem;margin-top:10px;}
+.tempo{font-size:1.4rem;margin-top:10px;line-height:1.6;}
 </style>
 </head>
 
 <body>
 
-<!-- PLAYER -->
 <div class="player">
 <div class="foto-musica">
-<img src="fotomusica1.png">
+<img src="fotomusica1.png" onerror="this.style.display='none'">
 
 <div class="controls">
 <button onclick="trocarMusica(-1)">⏮</button>
@@ -234,7 +218,6 @@ Estamos juntos há:
 /* ESTRELAS */
 function gerarEstrelas(){
 const container=document.getElementById("estrelas");
-container.innerHTML="";
 for(let i=0;i<80;i++){
 const e=document.createElement("div");
 e.className="estrela";
@@ -245,7 +228,7 @@ container.appendChild(e);
 }}
 gerarEstrelas();
 
-/* FLOAT ❤️🌻 */
+/* FLOAT */
 const simbolos=["❤️","🌻"];
 setInterval(()=>{
 const el=document.createElement("div");
@@ -257,7 +240,7 @@ document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 },800);
 
-/* 🖼️ FOTO SUBINDO (CORRIGIDO) */
+/* FOTOS */
 const fotos=["foto1.jpg","foto2.jpg","foto3.jpg"];
 
 setInterval(()=>{
@@ -269,20 +252,44 @@ f.style.animationDuration=(10 + Math.random()*6)+"s";
 const img=document.createElement("img");
 img.src=fotos[Math.floor(Math.random()*fotos.length)];
 
+img.onerror=()=>f.remove();
+
 f.appendChild(img);
 document.body.appendChild(f);
 
 setTimeout(()=>f.remove(),18000);
 },4000);
 
-/* CONTADOR */
-const dataInicio=new Date("2026-03-02");
-setInterval(()=>{
+/* CRONÔMETRO COMPLETO */
+const dataInicio=new Date("2026-03-02T00:00:00");
+
+function atualizarTempo(){
 const agora=new Date();
-let diff=agora-dataInicio;
-const dias=Math.floor(diff/(24*3600*1000));
-document.getElementById("tempo").innerHTML=dias+" dias ❤️";
-},1000);
+
+let anos=agora.getFullYear()-dataInicio.getFullYear();
+let meses=agora.getMonth()-dataInicio.getMonth();
+let dias=agora.getDate()-dataInicio.getDate();
+let horas=agora.getHours()-dataInicio.getHours();
+let minutos=agora.getMinutes()-dataInicio.getMinutes();
+let segundos=agora.getSeconds()-dataInicio.getSeconds();
+
+if(segundos<0){segundos+=60;minutos--;}
+if(minutos<0){minutos+=60;horas--;}
+if(horas<0){horas+=24;dias--;}
+if(dias<0){
+const ultimoMes=new Date(agora.getFullYear(),agora.getMonth(),0).getDate();
+dias+=ultimoMes;
+meses--;
+}
+if(meses<0){meses+=12;anos--;}
+
+document.getElementById("tempo").innerHTML=
+`${anos} anos, ${meses} meses, ${dias} dias<br>
+${horas}h ${minutos}m ${segundos}s ❤️`;
+}
+
+setInterval(atualizarTempo,1000);
+atualizarTempo();
 
 /* MÚSICA */
 const playlist=["musica1.mp3","musica2.mp3"];
@@ -291,14 +298,15 @@ let tocando=false;
 const musica=document.getElementById("musica");
 
 function playPause(){
-tocando?musica.pause():musica.play();
+if(!musica.src) musica.src=playlist[0];
+tocando?musica.pause():musica.play().catch(()=>{});
 tocando=!tocando;
 }
 
 function trocarMusica(dir){
 musicaIndex=(musicaIndex+dir+playlist.length)%playlist.length;
 musica.src=playlist[musicaIndex];
-musica.play();
+musica.play().catch(()=>{});
 tocando=true;
 }
 
