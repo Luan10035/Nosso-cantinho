@@ -37,18 +37,19 @@ background-size:cover;
 z-index:0;
 }
 
-/* 🎵 PLAYER */
+/* 🎵 PLAYER MELHORADO */
 .player{
 position:fixed;
 top:20px;
 right:20px;
 z-index:200;
-width:230px;
-background:#111;
-border-radius:18px;
-padding:12px;
-box-shadow:0 10px 30px rgba(0,0,0,0.6);
+width:260px;
+background:rgba(15,15,15,0.9);
+border-radius:20px;
+padding:15px;
+box-shadow:0 15px 40px rgba(0,0,0,0.8);
 text-align:center;
+backdrop-filter: blur(8px);
 }
 
 .foto-musica{
@@ -59,46 +60,49 @@ margin-bottom:10px;
 }
 
 .foto-musica img{
-width:170px;
-height:170px;
+width:180px;
+height:180px;
 object-fit:cover;
-clip-path: path("M85 150 L20 80 A35 35 0 1 1 85 40 A35 35 0 1 1 150 80 Z");
+border-radius:50%;
+box-shadow:0 0 20px rgba(255,200,0,0.4);
 }
 
-.player .controls{
+/* BOTÕES EM CIMA DA FOTO */
+.controls{
 position:absolute;
-bottom:75px;
+bottom:20px;
 left:50%;
 transform:translateX(-50%);
 display:flex;
-align-items:center;
-gap:18px;
+gap:12px;
 }
 
-.player .controls button{
+.controls button{
 background:white;
 border:none;
 border-radius:50%;
-width:40px;
-height:40px;
+width:45px;
+height:45px;
 cursor:pointer;
+font-size:18px;
+box-shadow:0 5px 15px rgba(0,0,0,0.5);
+}
+
+.controls .play{
+width:60px;
+height:60px;
+font-size:22px;
+}
+
+/* TEXTO */
+.titulo{
 font-size:16px;
-}
-
-.player .controls .play{
-width:55px;
-height:55px;
-font-size:20px;
-}
-
-.player .titulo{
-font-size:14px;
 font-weight:bold;
 margin-top:10px;
 }
 
-.player .artista{
-font-size:12px;
+.artista{
+font-size:13px;
 opacity:0.7;
 }
 
@@ -119,20 +123,43 @@ animation:piscar infinite alternate;
 100%{opacity:1;}
 }
 
-/* ❤️🌻 FLOAT */
+/* ❤️🌻 FLOAT MELHORADO */
 .float{
 position:fixed;
-bottom:-20px;
-font-size:32px;
+bottom:-50px;
+font-size:28px;
 animation:subir linear forwards;
 z-index:2;
 pointer-events:none;
+opacity:0.9;
 }
 
 @keyframes subir{
-0%{transform:translateY(0);opacity:0;}
+0%{transform:translateY(0) scale(0.8);opacity:0;}
 10%{opacity:1;}
-100%{transform:translateY(-130vh);opacity:0;}
+50%{transform:translateY(-50vh) scale(1.1);}
+100%{transform:translateY(-120vh) scale(0.9);opacity:0;}
+}
+
+/* 🖼️ FOTO SUBINDO */
+.foto-float{
+position:fixed;
+bottom:-200px;
+width:180px;
+background:white;
+padding:8px;
+border-radius:10px;
+box-shadow:0 25px 50px rgba(0,0,0,0.9);
+z-index:5;
+animation:subirFoto linear forwards;
+}
+
+.foto-float img{width:100%;border-radius:6px;}
+
+@keyframes subirFoto{
+0%{transform:translateY(0) scale(0.9);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-150vh) scale(1);opacity:1;}
 }
 
 /* RESTO */
@@ -149,11 +176,8 @@ background: linear-gradient(90deg,#66c2ff,#66ff99,#ff9933);
 -webkit-text-fill-color:transparent;
 }
 
-.coracao{margin:0 10px;}
-
 .girassol{
 font-size:3rem;
-filter: drop-shadow(0 0 10px rgba(255,200,0,0.8));
 animation:pulse 2s infinite alternate;
 }
 
@@ -164,68 +188,24 @@ background: rgba(10,10,10,0.15);
 backdrop-filter: blur(2px);
 padding:25px;border-radius:15px;
 border:1px solid rgba(255,255,255,0.25);
-z-index:100;
 }
 
 .tempo{font-size:1.5rem;margin-top:10px;}
-
-.foto-float{
-position:fixed;
-bottom:-200px;
-width:190px;
-background:white;
-padding:8px;
-border-radius:8px;
-box-shadow:0 20px 40px rgba(0,0,0,0.7);
-z-index:10;
-animation:subirFoto linear forwards;
-}
-
-.foto-float img{width:100%;border-radius:6px;}
-
-@keyframes subirFoto{
-0%{transform:translateY(0);opacity:0;}
-10%{opacity:1;}
-100%{transform:translateY(-140vh);opacity:1;}
-}
-
-.frase{
-position:fixed;
-font-family:'Great Vibes', cursive;
-font-size:1.9rem;
-opacity:0;
-animation:fadeMove 15s ease-in-out forwards;
-z-index:3;
-max-width:280px;
-text-align:center;
-}
-
-.frase-pequena{
-font-size:1.4rem;
-max-width:320px;
-}
-
-@keyframes fadeMove{
-0%{opacity:0;}
-20%{opacity:1;}
-80%{opacity:1;}
-100%{opacity:0;}
-}
-
 </style>
 </head>
 
 <body>
 
+<!-- PLAYER -->
 <div class="player">
 <div class="foto-musica">
 <img src="fotomusica1.png">
-</div>
 
 <div class="controls">
 <button onclick="trocarMusica(-1)">⏮</button>
 <button class="play" onclick="playPause()">▶</button>
 <button onclick="trocarMusica(1)">⏭</button>
+</div>
 </div>
 
 <div class="titulo">Lu e Gi</div>
@@ -237,7 +217,7 @@ max-width:320px;
 <div class="container">
 <div class="nome-container">
 <span class="girassol">🌻</span>
-<div class="nome">Luan <span class="coracao">❤️</span> Girlane</div>
+<div class="nome">Luan ❤️ Girlane</div>
 <span class="girassol">🌻</span>
 </div>
 
@@ -251,142 +231,68 @@ Estamos juntos há:
 
 <script>
 
-/* ESTRELAS DINÂMICAS */
+/* ESTRELAS */
 function gerarEstrelas(){
 const container=document.getElementById("estrelas");
 container.innerHTML="";
-
 for(let i=0;i<80;i++){
 const e=document.createElement("div");
 e.className="estrela";
 e.style.top=Math.random()*100+"%";
 e.style.left=Math.random()*100+"%";
-const size=Math.random()*2+1;
-e.style.width=size+"px";
-e.style.height=size+"px";
 e.style.animationDuration=(1.5 + Math.random()*2)+"s";
 container.appendChild(e);
-}
-}
+}}
 gerarEstrelas();
-setInterval(gerarEstrelas,15000);
 
-/* FLOAT */
+/* FLOAT ❤️🌻 */
 const simbolos=["❤️","🌻"];
-
-function criarFloat(){
+setInterval(()=>{
 const el=document.createElement("div");
 el.className="float";
-el.innerHTML=simbolos[Math.floor(Math.random()*simbolos.length)];
-el.style.left=(10 + Math.random()*80)+"vw";
-el.style.animationDuration=(10 + Math.random()*5)+"s";
+el.innerHTML=simbolos[Math.floor(Math.random()*2)];
+el.style.left=Math.random()*100+"vw";
+el.style.animationDuration=(8 + Math.random()*6)+"s";
 document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
-}
-setInterval(criarFloat,1200);
+},800);
+
+/* 🖼️ FOTO SUBINDO (CORRIGIDO) */
+const fotos=["foto1.jpg","foto2.jpg","foto3.jpg"];
+
+setInterval(()=>{
+const f=document.createElement("div");
+f.className="foto-float";
+f.style.left=(10 + Math.random()*70)+"vw";
+f.style.animationDuration=(10 + Math.random()*6)+"s";
+
+const img=document.createElement("img");
+img.src=fotos[Math.floor(Math.random()*fotos.length)];
+
+f.appendChild(img);
+document.body.appendChild(f);
+
+setTimeout(()=>f.remove(),18000);
+},4000);
 
 /* CONTADOR */
 const dataInicio=new Date("2026-03-02");
-
-function atualizarTempo(){
+setInterval(()=>{
 const agora=new Date();
 let diff=agora-dataInicio;
-
-const anos=Math.floor(diff/(365.25*24*3600*1000));
-diff%=(365.25*24*3600*1000);
-
-const meses=Math.floor(diff/(30.44*24*3600*1000));
-diff%=(30.44*24*3600*1000);
-
 const dias=Math.floor(diff/(24*3600*1000));
-diff%=(24*3600*1000);
-
-const horas=Math.floor(diff/(3600*1000));
-diff%=(3600*1000);
-
-const minutos=Math.floor(diff/(60*1000));
-diff%=(60*1000);
-
-const segundos=Math.floor(diff/1000);
-
-document.getElementById("tempo").innerHTML=
-`${anos} anos, ${meses} meses, ${dias} dias<br>
-${horas}h ${minutos}m ${segundos}s`;
-}
-setInterval(atualizarTempo,1000);
-
-/* FRASES */
-let fraseAtiva=false;
-let indexFrase=0;
-
-const posicoesFrases=[
-{top:"5%", left:"5%"},
-{top:"5%", right:"5%"},
-{bottom:"10%", left:"5%"},
-{bottom:"10%", right:"5%"}
-];
-
-const frases=[
-"Entre todos os girassóis do mundo, nenhum brilha mais do que o teu sorriso 🌻",
-"Você não é só parte dos meus dias… você é o melhor deles ❤️",
-"O mundo pode ser grande… mas nada nele me faz sentir tão completo quanto você 💫",
-"Eu não sei exatamente em que momento você deixou de ser só alguém especial e virou alguém essencial pra mim… mas sei que, desde então, tudo ficou mais leve."
-];
-
-const fraseEspecial=`Eu não preciso de muito pra saber o que eu sinto...
-
-Eu quero você comigo.`;
-
-let contadorFrase=0;
-
-function criarFrase(){
-if(fraseAtiva) return;
-
-fraseAtiva=true;
-
-const f=document.createElement("div");
-
-if(contadorFrase % 5 === 0){
-f.className="frase frase-pequena";
-f.innerText=fraseEspecial;
-}else{
-f.className="frase";
-f.innerText=frases[Math.floor(Math.random()*frases.length)];
-}
-
-contadorFrase++;
-
-const pos=posicoesFrases[indexFrase];
-indexFrase=(indexFrase+1)%posicoesFrases.length;
-
-for(let key in pos){
-f.style[key]=pos[key];
-}
-
-document.body.appendChild(f);
-
-setTimeout(()=>{
-f.remove();
-fraseAtiva=false;
-},15000);
-}
-setInterval(criarFrase,7000);
+document.getElementById("tempo").innerHTML=dias+" dias ❤️";
+},1000);
 
 /* MÚSICA */
 const playlist=["musica1.mp3","musica2.mp3"];
 let musicaIndex=0;
 let tocando=false;
-
 const musica=document.getElementById("musica");
 
 function playPause(){
-if(tocando){
-musica.pause();
-tocando=false;
-}else{
-musica.play();
-tocando=true;
-}
+tocando?musica.pause():musica.play();
+tocando=!tocando;
 }
 
 function trocarMusica(dir){
@@ -398,13 +304,6 @@ tocando=true;
 
 musica.src=playlist[0];
 musica.volume=0.3;
-
-musica.play().then(()=>tocando=true).catch(()=>{
-document.body.addEventListener("click",()=>{
-musica.play();
-tocando=true;
-},{once:true});
-});
 
 </script>
 
