@@ -38,7 +38,7 @@ width:90%;
 max-width:900px;
 }
 
-/* TÍTULO AJUSTADO */
+/* TÍTULO */
 .nome-container{
 display:flex;
 align-items:center;
@@ -61,29 +61,33 @@ color:#66ff99;
 animation:pulse 1.5s infinite alternate;
 }
 
+.girassol{
+font-size:2.5rem;
+animation:pulse 2s infinite alternate;
+}
+
 @keyframes pulse{
 from{transform:scale(1);}
 to{transform:scale(1.2);}
 }
 
-@media(max-width:768px){
-.nome{font-size:3rem;}
-}
-
-/* FRASES SOLTAS */
+/* FRASES */
 .frase-float{
 position:fixed;
-font-size:1.3rem;
+font-family:'Great Vibes', cursive;
+font-size:1.8rem;
+color:white;
+text-shadow:0 0 10px rgba(255,255,255,0.6);
 opacity:0;
 z-index:40;
-animation:fadeFrase 6s forwards;
+animation:fadeFrase 10s ease-in-out forwards;
 pointer-events:none;
 }
 
 @keyframes fadeFrase{
 0%{opacity:0;}
-20%{opacity:1;}
-80%{opacity:1;}
+15%{opacity:1;}
+85%{opacity:1;}
 100%{opacity:0;}
 }
 
@@ -96,7 +100,7 @@ border-radius:15px;
 
 .tempo{font-size:1.2rem;margin-top:10px;line-height:1.5;}
 
-/* PLAYER (inalterado) */
+/* PLAYER */
 .player{
 position:fixed;
 top:15px;
@@ -111,13 +115,35 @@ backdrop-filter: blur(8px);
 }
 
 .foto-musica img{
-width:120px;
-height:120px;
-border-radius:50%;
+width:160px;
+height:160px;
+border-radius:12px;
 object-fit:cover;
+box-shadow:0 10px 25px rgba(0,0,0,0.6);
 }
 
-/* ESTRELAS (inalterado) */
+.controls{
+margin-top:8px;
+display:flex;
+justify-content:center;
+gap:8px;
+}
+
+.controls button{
+background:white;
+border:none;
+border-radius:50%;
+width:35px;
+height:35px;
+cursor:pointer;
+}
+
+.controls .play{
+width:45px;
+height:45px;
+}
+
+/* ESTRELAS */
 .estrelas{position:fixed;width:100%;height:100%;z-index:1;}
 .estrela{
 position:absolute;
@@ -175,15 +201,23 @@ border-radius:6px;
 <div class="foto-musica">
 <img src="fotomusica1.png">
 </div>
+
+<div class="controls">
+<button onclick="trocarMusica(-1)">⏮</button>
+<button class="play" onclick="playPause()">▶</button>
+<button onclick="trocarMusica(1)">⏭</button>
+</div>
 </div>
 
 <div class="estrelas" id="estrelas"></div>
 
 <div class="container">
 <div class="nome-container">
+<span class="girassol">🌻</span>
 <div class="nome">Luan</div>
 <div class="coracao">💚</div>
 <div class="nome">Girlane</div>
+<span class="girassol">🌻</span>
 </div>
 
 <div class="contador">
@@ -196,7 +230,7 @@ Estamos juntos há:
 
 <script>
 
-/* FRASES SOLTAS */
+/* FRASES */
 const frases=[
 "Eu escolheria você mil vezes 💛",
 "Você é o meu lar ✨",
@@ -208,14 +242,13 @@ setInterval(()=>{
 const f=document.createElement("div");
 f.className="frase-float";
 f.innerText=frases[Math.floor(Math.random()*frases.length)];
-
 f.style.top=Math.random()*80+"%";
 f.style.left=Math.random()*80+"%";
 
 document.body.appendChild(f);
-setTimeout(()=>f.remove(),6000);
+setTimeout(()=>f.remove(),10000);
 
-},3000);
+},6000);
 
 /* ESTRELAS */
 const estrelas=document.getElementById("estrelas");
@@ -239,7 +272,7 @@ document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 },800);
 
-/* FOTOS + VÍDEO */
+/* FOTOS */
 const midias=[
 "foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg",
 "foto6.jpeg","foto7.jpeg","foto8.jpeg","foto9.jpeg","foto10.jpeg",
@@ -274,7 +307,7 @@ setTimeout(()=>f.remove(),18000);
 
 },4000);
 
-/* CRONÔMETRO (inalterado) */
+/* CRONÔMETRO */
 const inicio=new Date("2026-03-02T00:00:00");
 
 function atualizar(){
@@ -305,7 +338,7 @@ ${horas}h ${minutos}m ${segundos}s ❤️`;
 setInterval(atualizar,1000);
 atualizar();
 
-/* MÚSICA (inalterado) */
+/* MÚSICA */
 const playlist=["musica1.mp3","musica2.mp3"];
 let index=0;
 const musica=document.getElementById("musica");
@@ -313,6 +346,15 @@ const musica=document.getElementById("musica");
 function tocar(){
 musica.src=playlist[index];
 musica.play().catch(()=>{});
+}
+
+function playPause(){
+musica.paused?musica.play():musica.pause();
+}
+
+function trocarMusica(dir){
+index=(index+dir+playlist.length)%playlist.length;
+tocar();
 }
 
 musica.addEventListener("ended",()=>{
