@@ -18,7 +18,6 @@ overflow:hidden;
 color:white;
 }
 
-/* FUNDO 100% */
 body{
 position:relative;
 background:
@@ -27,7 +26,7 @@ url("fundo.jpeg") no-repeat center center;
 background-size:cover;
 }
 
-/* CONTAINER CENTRAL */
+/* CONTAINER */
 .container{
 position:absolute;
 top:50%;
@@ -39,30 +38,53 @@ width:90%;
 max-width:900px;
 }
 
-/* NOMES */
+/* TÍTULO AJUSTADO */
+.nome-container{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:20px;
+}
+
 .nome{
 font-family:'Great Vibes', cursive;
 font-size:5rem;
-background: linear-gradient(90deg,#66c2ff,#66ff99,#ff9933);
+background: linear-gradient(90deg,#8fd3ff,#66ff99,#ff9933);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
+filter: drop-shadow(0 0 10px rgba(255,255,255,0.4));
+}
+
+.coracao{
+font-size:3rem;
+color:#66ff99;
+animation:pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse{
+from{transform:scale(1);}
+to{transform:scale(1.2);}
 }
 
 @media(max-width:768px){
 .nome{font-size:3rem;}
 }
 
-/* FRASES */
-.frase{
-margin:20px 0;
-font-size:1.4rem;
+/* FRASES SOLTAS */
+.frase-float{
+position:fixed;
+font-size:1.3rem;
 opacity:0;
-transition:opacity 1s;
-min-height:40px;
+z-index:40;
+animation:fadeFrase 6s forwards;
+pointer-events:none;
 }
 
-@media(max-width:768px){
-.frase{font-size:1.1rem;}
+@keyframes fadeFrase{
+0%{opacity:0;}
+20%{opacity:1;}
+80%{opacity:1;}
+100%{opacity:0;}
 }
 
 /* CONTADOR */
@@ -74,7 +96,7 @@ border-radius:15px;
 
 .tempo{font-size:1.2rem;margin-top:10px;line-height:1.5;}
 
-/* PLAYER */
+/* PLAYER (inalterado) */
 .player{
 position:fixed;
 top:15px;
@@ -95,41 +117,7 @@ border-radius:50%;
 object-fit:cover;
 }
 
-/* MOBILE PLAYER */
-@media(max-width:768px){
-.player{
-width:160px;
-padding:8px;
-}
-.foto-musica img{
-width:90px;
-height:90px;
-}
-}
-
-/* CONTROLES */
-.controls{
-margin-top:8px;
-display:flex;
-justify-content:center;
-gap:8px;
-}
-
-.controls button{
-background:white;
-border:none;
-border-radius:50%;
-width:35px;
-height:35px;
-cursor:pointer;
-}
-
-.controls .play{
-width:45px;
-height:45px;
-}
-
-/* ESTRELAS */
+/* ESTRELAS (inalterado) */
 .estrelas{position:fixed;width:100%;height:100%;z-index:1;}
 .estrela{
 position:absolute;
@@ -167,10 +155,10 @@ z-index:5;
 animation:subirFoto linear forwards;
 }
 
-.foto-float img{width:100%;border-radius:6px;}
-
-@media(max-width:768px){
-.foto-float{width:100px;}
+.foto-float img,
+.foto-float video{
+width:100%;
+border-radius:6px;
 }
 
 @keyframes subirFoto{
@@ -183,24 +171,20 @@ animation:subirFoto linear forwards;
 
 <body>
 
-<!-- PLAYER -->
 <div class="player">
 <div class="foto-musica">
 <img src="fotomusica1.png">
-</div>
-
-<div class="controls">
-<button onclick="trocarMusica(-1)">⏮</button>
-<button class="play" onclick="playPause()">▶</button>
-<button onclick="trocarMusica(1)">⏭</button>
 </div>
 </div>
 
 <div class="estrelas" id="estrelas"></div>
 
 <div class="container">
-<div class="nome">Luan ❤️ Girlane</div>
-<div class="frase" id="frase"></div>
+<div class="nome-container">
+<div class="nome">Luan</div>
+<div class="coracao">💚</div>
+<div class="nome">Girlane</div>
+</div>
 
 <div class="contador">
 Estamos juntos há:
@@ -212,7 +196,7 @@ Estamos juntos há:
 
 <script>
 
-/* FRASES */
+/* FRASES SOLTAS */
 const frases=[
 "Eu escolheria você mil vezes 💛",
 "Você é o meu lar ✨",
@@ -220,19 +204,18 @@ const frases=[
 "Nosso amor é leve e verdadeiro 🌻"
 ];
 
-let fIndex=0;
-const fraseEl=document.getElementById("frase");
+setInterval(()=>{
+const f=document.createElement("div");
+f.className="frase-float";
+f.innerText=frases[Math.floor(Math.random()*frases.length)];
 
-function trocarFrase(){
-fraseEl.style.opacity=0;
-setTimeout(()=>{
-fraseEl.innerHTML=frases[fIndex];
-fraseEl.style.opacity=1;
-fIndex=(fIndex+1)%frases.length;
-},500);
-}
-setInterval(trocarFrase,4000);
-trocarFrase();
+f.style.top=Math.random()*80+"%";
+f.style.left=Math.random()*80+"%";
+
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),6000);
+
+},3000);
 
 /* ESTRELAS */
 const estrelas=document.getElementById("estrelas");
@@ -256,8 +239,13 @@ document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 },800);
 
-/* FOTOS */
-const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg"];
+/* FOTOS + VÍDEO */
+const midias=[
+"foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg",
+"foto6.jpeg","foto7.jpeg","foto8.jpeg","foto9.jpeg","foto10.jpeg",
+"foto11.jpeg","foto12.jpeg","foto13.jpeg","foto14.jpeg","foto15.jpeg",
+"video1.mp4"
+];
 
 setInterval(()=>{
 let f=document.createElement("div");
@@ -265,17 +253,28 @@ f.className="foto-float";
 f.style.left=(10+Math.random()*70)+"vw";
 f.style.animationDuration=(10+Math.random()*5)+"s";
 
+let arquivo=midias[Math.floor(Math.random()*midias.length)];
+
+if(arquivo.includes(".mp4")){
+let v=document.createElement("video");
+v.src=arquivo;
+v.autoplay=true;
+v.loop=true;
+v.muted=true;
+f.appendChild(v);
+}else{
 let img=document.createElement("img");
-img.src=fotos[Math.floor(Math.random()*fotos.length)];
+img.src=arquivo;
 img.onerror=()=>f.remove();
-
 f.appendChild(img);
-document.body.appendChild(f);
+}
 
+document.body.appendChild(f);
 setTimeout(()=>f.remove(),18000);
+
 },4000);
 
-/* CRONÔMETRO COMPLETO */
+/* CRONÔMETRO (inalterado) */
 const inicio=new Date("2026-03-02T00:00:00");
 
 function atualizar(){
@@ -306,7 +305,7 @@ ${horas}h ${minutos}m ${segundos}s ❤️`;
 setInterval(atualizar,1000);
 atualizar();
 
-/* MÚSICA */
+/* MÚSICA (inalterado) */
 const playlist=["musica1.mp3","musica2.mp3"];
 let index=0;
 const musica=document.getElementById("musica");
@@ -316,34 +315,16 @@ musica.src=playlist[index];
 musica.play().catch(()=>{});
 }
 
-function playPause(){
-musica.paused?musica.play():musica.pause();
-}
-
-function trocarMusica(dir){
-index=(index+dir+playlist.length)%playlist.length;
-tocar();
-}
-
-/* AUTO NEXT */
 musica.addEventListener("ended",()=>{
 index=(index+1)%playlist.length;
 tocar();
 });
 
-/* AUTO PLAY */
-window.addEventListener("load",()=>{
-tocar();
-});
+window.addEventListener("load",()=>{tocar();});
 
-/* FALLBACK MOBILE */
 document.body.addEventListener("click",()=>{
-if(musica.paused){
-musica.play().catch(()=>{});
-}
+if(musica.paused){musica.play();}
 },{once:true});
-
-musica.volume=0.3;
 
 </script>
 
