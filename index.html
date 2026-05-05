@@ -10,172 +10,36 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-font-family:'Playfair Display', serif;
-color:white;
-overflow:hidden;
-position:relative;
-opacity:0;
-animation:fadeIn 2s ease forwards;
-}
-
-@keyframes fadeIn{to{opacity:1;}}
-
-body::before{
-content:"";
-position:absolute;
+html, body{
 width:100%;
 height:100%;
+font-family:'Playfair Display', serif;
+overflow:hidden;
+color:white;
+}
+
+/* FUNDO 100% */
+body{
+position:relative;
 background:
 linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
-url("fundo.jpeg") center center no-repeat;
-background-size:contain;
-background-repeat:no-repeat;
-background-color:#000;
-z-index:0;
-}
-
-/* PLAYER */
-.player{
-position:fixed;
-top:20px;
-right:20px;
-z-index:200;
-width:260px;
-background:#111;
-border-radius:18px;
-padding:15px;
-box-shadow:0 15px 40px rgba(0,0,0,0.9);
-}
-
-.player-img{
-width:100%;
-height:140px;
-background:#333;
-border-radius:12px;
-margin-bottom:10px;
-background-image:url("foto6.jpeg");
+url("fundo.jpeg") no-repeat center center;
 background-size:cover;
-background-position:center;
 }
 
-.player-title{
-font-size:14px;
-font-weight:bold;
-}
-
-.player-sub{
-font-size:12px;
-opacity:0.7;
-margin-bottom:8px;
-}
-
-.player-controls{
-display:flex;
-justify-content:center;
-gap:12px;
-margin:10px 0;
-}
-
-.player-controls button{
-background:white;
-border:none;
-border-radius:50%;
-width:45px;
-height:45px;
-cursor:pointer;
-}
-
-.play{
-width:60px;
-height:60px;
-}
-
-/* ESTRELAS */
-.estrelas{position:fixed;width:100%;height:100%;z-index:1;}
-
-.estrela{
+/* CONTAINER CENTRAL */
+.container{
 position:absolute;
-width:3px;
-height:3px;
-border-radius:50%;
-background:gold;
-box-shadow:0 0 10px gold,0 0 25px gold;
-animation:estrelaAnim 10s linear forwards;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+z-index:50;
+width:90%;
+max-width:900px;
 }
 
-@keyframes estrelaAnim{
-0%{opacity:0;transform:scale(0.5);}
-30%{opacity:1;transform:scale(1.2);}
-70%{opacity:1;}
-100%{opacity:0;transform:scale(0.5);}
-}
-
-/* FRASES */
-.frase-float{
-position:fixed;
-font-family:'Great Vibes', cursive;
-font-size:2rem;
-opacity:0;
-animation:fadeFrase 10s forwards;
-z-index:100;
-pointer-events:none;
-text-shadow:0 0 10px rgba(255,255,255,0.8);
-}
-
-@keyframes fadeFrase{
-0%{opacity:0;}
-10%{opacity:1;}
-80%{opacity:1;}
-100%{opacity:0;}
-}
-
-/* FLOAT */
-.float{
-position:fixed;
-bottom:-50px;
-font-size:28px;
-animation:subir linear forwards;
-z-index:2;
-pointer-events:none;
-opacity:0.9;
-}
-
-@keyframes subir{
-0%{transform:translateY(0) scale(0.8);opacity:0;}
-10%{opacity:1;}
-50%{transform:translateY(-50vh) scale(1.1);}
-100%{transform:translateY(-120vh) scale(0.9);opacity:0;}
-}
-
-/* FOTOS */
-.foto-float{
-position:fixed;
-bottom:-200px;
-width:180px;
-background:white;
-padding:8px;
-border-radius:10px;
-box-shadow:0 25px 50px rgba(0,0,0,0.9);
-z-index:5;
-animation:subirFoto linear forwards;
-}
-
-.foto-float img{width:100%;border-radius:6px;}
-
-@keyframes subirFoto{
-0%{transform:translateY(0) scale(0.9);opacity:0;}
-10%{opacity:1;}
-100%{transform:translateY(-150vh) scale(1);opacity:0;}
-}
-
-/* TEXTO */
-.container{text-align:center;z-index:50;position:relative;}
-
+/* NOMES */
 .nome{
 font-family:'Great Vibes', cursive;
 font-size:5rem;
@@ -184,24 +48,148 @@ background: linear-gradient(90deg,#66c2ff,#66ff99,#ff9933);
 -webkit-text-fill-color:transparent;
 }
 
-.contador{
-background: rgba(10,10,10,0.15);
-padding:25px;border-radius:15px;
-border:1px solid rgba(255,255,255,0.25);
+@media(max-width:768px){
+.nome{font-size:3rem;}
 }
 
-.tempo{font-size:1.3rem;margin-top:10px;}
+/* FRASES */
+.frase{
+margin:20px 0;
+font-size:1.4rem;
+opacity:0;
+transition:opacity 1s;
+min-height:40px;
+}
+
+@media(max-width:768px){
+.frase{font-size:1.1rem;}
+}
+
+/* CONTADOR */
+.contador{
+background: rgba(0,0,0,0.25);
+padding:20px;
+border-radius:15px;
+}
+
+.tempo{font-size:1.2rem;margin-top:10px;line-height:1.5;}
+
+/* PLAYER */
+.player{
+position:fixed;
+top:15px;
+right:15px;
+z-index:200;
+width:220px;
+background:rgba(15,15,15,0.9);
+border-radius:20px;
+padding:10px;
+text-align:center;
+backdrop-filter: blur(8px);
+}
+
+.foto-musica img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+}
+
+/* MOBILE PLAYER */
+@media(max-width:768px){
+.player{
+width:160px;
+padding:8px;
+}
+.foto-musica img{
+width:90px;
+height:90px;
+}
+}
+
+/* CONTROLES */
+.controls{
+margin-top:8px;
+display:flex;
+justify-content:center;
+gap:8px;
+}
+
+.controls button{
+background:white;
+border:none;
+border-radius:50%;
+width:35px;
+height:35px;
+cursor:pointer;
+}
+
+.controls .play{
+width:45px;
+height:45px;
+}
+
+/* ESTRELAS */
+.estrelas{position:fixed;width:100%;height:100%;z-index:1;}
+.estrela{
+position:absolute;
+width:2px;height:2px;background:white;
+animation:piscar infinite alternate;
+}
+@keyframes piscar{
+0%{opacity:0.2;}
+100%{opacity:1;}
+}
+
+/* FLOAT */
+.float{
+position:fixed;
+bottom:-50px;
+font-size:22px;
+animation:subir linear forwards;
+z-index:2;
+}
+@keyframes subir{
+0%{transform:translateY(0);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-120vh);opacity:0;}
+}
+
+/* FOTOS */
+.foto-float{
+position:fixed;
+bottom:-200px;
+width:140px;
+background:white;
+padding:6px;
+border-radius:10px;
+z-index:5;
+animation:subirFoto linear forwards;
+}
+
+.foto-float img{width:100%;border-radius:6px;}
+
+@media(max-width:768px){
+.foto-float{width:100px;}
+}
+
+@keyframes subirFoto{
+0%{transform:translateY(0);opacity:0;}
+10%{opacity:1;}
+100%{transform:translateY(-150vh);opacity:0;}
+}
 </style>
 </head>
 
 <body>
 
+<!-- PLAYER -->
 <div class="player">
-<div class="player-img"></div>
-<div class="player-title">Luan & Gi</div>
-<div class="player-sub">Nossas músicas</div>
+<div class="foto-musica">
+<img src="fotomusica1.png">
+</div>
 
-<div class="player-controls">
+<div class="controls">
 <button onclick="trocarMusica(-1)">⏮</button>
 <button class="play" onclick="playPause()">▶</button>
 <button onclick="trocarMusica(1)">⏭</button>
@@ -212,6 +200,7 @@ border:1px solid rgba(255,255,255,0.25);
 
 <div class="container">
 <div class="nome">Luan ❤️ Girlane</div>
+<div class="frase" id="frase"></div>
 
 <div class="contador">
 Estamos juntos há:
@@ -225,67 +214,59 @@ Estamos juntos há:
 
 /* FRASES */
 const frases=[
-"Você é meu destino ❤️",
-"Nosso amor é eterno 🌻",
 "Eu escolheria você mil vezes 💛",
-"Você é meu lar ✨"
+"Você é o meu lar ✨",
+"Cada momento contigo é único ❤️",
+"Nosso amor é leve e verdadeiro 🌻"
 ];
 
-setInterval(()=>{
-const f=document.createElement("div");
-f.className="frase-float";
-f.innerHTML=frases[Math.floor(Math.random()*frases.length)];
+let fIndex=0;
+const fraseEl=document.getElementById("frase");
 
-let lado = Math.random() < 0.5 ? "left" : "right";
-f.style[lado] = "5%";
-f.style.top = (5 + Math.random()*50) + "vh";
-
-document.body.appendChild(f);
-setTimeout(()=>f.remove(),10000);
-},3000);
+function trocarFrase(){
+fraseEl.style.opacity=0;
+setTimeout(()=>{
+fraseEl.innerHTML=frases[fIndex];
+fraseEl.style.opacity=1;
+fIndex=(fIndex+1)%frases.length;
+},500);
+}
+setInterval(trocarFrase,4000);
+trocarFrase();
 
 /* ESTRELAS */
-setInterval(()=>{
-const e=document.createElement("div");
+const estrelas=document.getElementById("estrelas");
+for(let i=0;i<80;i++){
+let e=document.createElement("div");
 e.className="estrela";
 e.style.top=Math.random()*100+"%";
 e.style.left=Math.random()*100+"%";
-document.getElementById("estrelas").appendChild(e);
-setTimeout(()=>e.remove(),10000);
-},200);
+e.style.animationDuration=(1+Math.random()*2)+"s";
+estrelas.appendChild(e);
+}
 
 /* FLOAT */
-const simbolos=["❤️","🌻"];
 setInterval(()=>{
-const el=document.createElement("div");
+let el=document.createElement("div");
 el.className="float";
-el.innerHTML=simbolos[Math.floor(Math.random()*2)];
+el.innerHTML=Math.random()>0.5?"❤️":"🌻";
 el.style.left=Math.random()*100+"vw";
-el.style.animationDuration=(8 + Math.random()*6)+"s";
+el.style.animationDuration=(8+Math.random()*5)+"s";
 document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 },800);
 
-/* FOTOS SEM REPETIÇÃO */
-let fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg","foto6.jpeg","foto7.jpeg"];
-let fila=[];
-
-function embaralhar(){
-fila=[...fotos].sort(()=>Math.random()-0.5);
-}
-
-embaralhar();
+/* FOTOS */
+const fotos=["foto1.jpeg","foto2.jpeg","foto3.jpeg"];
 
 setInterval(()=>{
-if(fila.length===0) embaralhar();
-
-const f=document.createElement("div");
+let f=document.createElement("div");
 f.className="foto-float";
-f.style.left=(10 + Math.random()*70)+"vw";
-f.style.animationDuration=(10 + Math.random()*6)+"s";
+f.style.left=(10+Math.random()*70)+"vw";
+f.style.animationDuration=(10+Math.random()*5)+"s";
 
-const img=document.createElement("img");
-img.src=fila.pop();
+let img=document.createElement("img");
+img.src=fotos[Math.floor(Math.random()*fotos.length)];
 img.onerror=()=>f.remove();
 
 f.appendChild(img);
@@ -294,18 +275,18 @@ document.body.appendChild(f);
 setTimeout(()=>f.remove(),18000);
 },4000);
 
-/* CRONÔMETRO */
-const dataInicio=new Date("2026-03-02T00:00:00");
+/* CRONÔMETRO COMPLETO */
+const inicio=new Date("2026-03-02T00:00:00");
 
-function atualizarTempo(){
+function atualizar(){
 const agora=new Date();
 
-let anos=agora.getFullYear()-dataInicio.getFullYear();
-let meses=agora.getMonth()-dataInicio.getMonth();
-let dias=agora.getDate()-dataInicio.getDate();
-let horas=agora.getHours()-dataInicio.getHours();
-let minutos=agora.getMinutes()-dataInicio.getMinutes();
-let segundos=agora.getSeconds()-dataInicio.getSeconds();
+let anos=agora.getFullYear()-inicio.getFullYear();
+let meses=agora.getMonth()-inicio.getMonth();
+let dias=agora.getDate()-inicio.getDate();
+let horas=agora.getHours()-inicio.getHours();
+let minutos=agora.getMinutes()-inicio.getMinutes();
+let segundos=agora.getSeconds()-inicio.getSeconds();
 
 if(segundos<0){segundos+=60;minutos--;}
 if(minutos<0){minutos+=60;horas--;}
@@ -322,28 +303,46 @@ document.getElementById("tempo").innerHTML=
 ${horas}h ${minutos}m ${segundos}s ❤️`;
 }
 
-setInterval(atualizarTempo,1000);
-atualizarTempo();
+setInterval(atualizar,1000);
+atualizar();
 
 /* MÚSICA */
 const playlist=["musica1.mp3","musica2.mp3"];
-let musicaIndex=0;
-let tocando=false;
+let index=0;
 const musica=document.getElementById("musica");
 
+function tocar(){
+musica.src=playlist[index];
+musica.play().catch(()=>{});
+}
+
 function playPause(){
-tocando?musica.pause():musica.play().catch(()=>{});
-tocando=!tocando;
+musica.paused?musica.play():musica.pause();
 }
 
 function trocarMusica(dir){
-musicaIndex=(musicaIndex+dir+playlist.length)%playlist.length;
-musica.src=playlist[musicaIndex];
-musica.play().catch(()=>{});
-tocando=true;
+index=(index+dir+playlist.length)%playlist.length;
+tocar();
 }
 
-musica.src=playlist[0];
+/* AUTO NEXT */
+musica.addEventListener("ended",()=>{
+index=(index+1)%playlist.length;
+tocar();
+});
+
+/* AUTO PLAY */
+window.addEventListener("load",()=>{
+tocar();
+});
+
+/* FALLBACK MOBILE */
+document.body.addEventListener("click",()=>{
+if(musica.paused){
+musica.play().catch(()=>{});
+}
+},{once:true});
+
 musica.volume=0.3;
 
 </script>
