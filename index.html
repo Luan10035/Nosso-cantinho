@@ -18,6 +18,64 @@ overflow:hidden;
 color:white;
 }
 
+/* ================= LOGIN ================= */
+.login-screen{
+position:fixed;
+width:100%;
+height:100%;
+background:
+linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
+url("sunrise.jpeg") center center no-repeat;
+background-size:cover;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+transition:opacity 1.5s ease;
+}
+
+.login-box{
+background:rgba(0,0,0,0.6);
+padding:30px;
+border-radius:15px;
+text-align:center;
+backdrop-filter:blur(10px);
+}
+
+.login-box h2{
+font-family:'Great Vibes', cursive;
+font-size:2.5rem;
+margin-bottom:15px;
+}
+
+.login-box input{
+padding:10px;
+border:none;
+border-radius:10px;
+outline:none;
+text-align:center;
+font-size:1.2rem;
+}
+
+.login-box button{
+margin-top:10px;
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#ff9933;
+color:white;
+cursor:pointer;
+}
+
+/* ================= SITE ================= */
+.site{
+display:none;
+height:100%;
+width:100%;
+}
+
+/* ======= (TODO O SEU CÓDIGO ORIGINAL ABAIXO NÃO FOI ALTERADO) ======= */
+
 body{
 position:relative;
 background:
@@ -197,6 +255,21 @@ border-radius:6px;
 
 <body>
 
+<!-- LOGIN -->
+<div class="login-screen" id="login">
+<div class="login-box">
+<h2>Digite a senha 💛</h2>
+<input type="password" id="senha" placeholder="••••">
+<br>
+<button onclick="entrar()">Entrar</button>
+</div>
+</div>
+
+<!-- SITE -->
+<div class="site" id="site">
+
+<!-- (SEU SITE ORIGINAL INTACTO) -->
+
 <div class="player">
 <div class="foto-musica">
 <img src="fotomusica1.png">
@@ -228,9 +301,34 @@ Estamos juntos há:
 
 <audio id="musica"></audio>
 
+</div>
+
 <script>
 
-/* FRASES */
+/* LOGIN */
+function entrar(){
+const senha = document.getElementById("senha").value;
+
+if(senha === "0203"){
+document.getElementById("login").style.opacity = 0;
+
+setTimeout(()=>{
+document.getElementById("login").style.display = "none";
+document.getElementById("site").style.display = "block";
+},1500);
+
+}else{
+alert("Senha incorreta 💔");
+}
+}
+
+/* PERMITIR ENTER */
+document.getElementById("senha").addEventListener("keypress",function(e){
+if(e.key==="Enter"){entrar();}
+});
+
+/* ===== SEU JS ORIGINAL (INALTERADO) ===== */
+
 const frases=[
 "Eu escolheria você mil vezes 💛",
 "Você é o meu lar ✨",
@@ -244,13 +342,10 @@ f.className="frase-float";
 f.innerText=frases[Math.floor(Math.random()*frases.length)];
 f.style.top=Math.random()*80+"%";
 f.style.left=Math.random()*80+"%";
-
 document.body.appendChild(f);
 setTimeout(()=>f.remove(),10000);
-
 },6000);
 
-/* ESTRELAS */
 const estrelas=document.getElementById("estrelas");
 for(let i=0;i<80;i++){
 let e=document.createElement("div");
@@ -261,7 +356,6 @@ e.style.animationDuration=(1+Math.random()*2)+"s";
 estrelas.appendChild(e);
 }
 
-/* FLOAT */
 setInterval(()=>{
 let el=document.createElement("div");
 el.className="float";
@@ -272,7 +366,6 @@ document.body.appendChild(el);
 setTimeout(()=>el.remove(),15000);
 },800);
 
-/* FOTOS */
 const midias=[
 "foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg","foto5.jpeg",
 "foto6.jpeg","foto7.jpeg","foto8.jpeg","foto9.jpeg","foto10.jpeg",
@@ -307,7 +400,6 @@ setTimeout(()=>f.remove(),18000);
 
 },4000);
 
-/* CRONÔMETRO */
 const inicio=new Date("2026-03-02T00:00:00");
 
 function atualizar(){
@@ -338,7 +430,6 @@ ${horas}h ${minutos}m ${segundos}s ❤️`;
 setInterval(atualizar,1000);
 atualizar();
 
-/* MÚSICA */
 const playlist=["musica1.mp3","musica2.mp3"];
 let index=0;
 const musica=document.getElementById("musica");
